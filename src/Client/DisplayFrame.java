@@ -6,11 +6,10 @@ import java.awt.HeadlessException;
 import javax.swing.JFrame;
 
 public class DisplayFrame extends JFrame {
-	public DisplayPane(String title) throws HeadlessException {
+	public DisplayFrame(String title) throws HeadlessException {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600, 1000);
+		setSize(1000, 600);
 		setVisible(true);
-		Thread.sleep(10000);
 	}
 }
