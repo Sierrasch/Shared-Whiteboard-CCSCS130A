@@ -33,6 +33,15 @@ public class DisplayFrame extends JFrame {
 		setupSVG();
 		setSize(1000, 600);
 		setVisible(true);
+		while(true){
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			drawPanel.repaint();
+		}
 	}
 
 	private void setupFrame(){
@@ -59,10 +68,10 @@ public class DisplayFrame extends JFrame {
 		buttonsPanel.add(loginPanel, BorderLayout.NORTH);
 		this.add(buttonsPanel, BorderLayout.EAST);
 	}
-	
+
 	private void setupSVG(){
 		canvas = new JSVGCanvas();
 		canvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
-		
+
 	}
 }
