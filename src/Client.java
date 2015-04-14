@@ -2,7 +2,6 @@ import Client.DisplayFrame;
 
 public class Client {
 	public static void main(String[] args) {
-		DisplayFrame clientFrame = new DisplayFrame("foo");
-		System.out.println("Application exit.");
+		DisplayFrame clientFrame = new DisplayFrame("Client");
 	}
 }
