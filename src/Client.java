@@ -39,11 +39,12 @@ public class Client {
 
             ClientManager client = ClientManager.createClient();
             client.connectToServer(new Client(), cec, new URI("ws://localhost:8025/websockets/board"));
-            messageLatch.await(100, TimeUnit.SECONDS);
         } catch (Exception e) {
         	System.out.println("Failed to contact server.");
             e.printStackTrace();
         }
+        
+        System.out.println("connected");
 	}
 
 	@OnOpen
