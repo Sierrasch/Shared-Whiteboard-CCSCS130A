@@ -27,6 +27,7 @@ import org.glassfish.tyrus.client.ClientManager;
 public class Client {
 	private static final String SENT_MESSAGE = "Hello World";
 	private static CountDownLatch messageLatch;
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public static void main(String[] args) {
 		//DisplayFrame clientFrame = new DisplayFrame("Client");
@@ -37,31 +38,13 @@ public class Client {
             final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
             ClientManager client = ClientManager.createClient();
-            client.connectToServer(new Endpoint() {
-                @Override
-                public void onOpen(Session session, EndpointConfig config) {
-                    try {
-                        session.addMessageHandler(new MessageHandler.Whole<String>() {
-
-                            @Override
-                            public void onMessage(String message) {
-                                System.out.println("Received message: "+message);
-                                messageLatch.countDown();
-                            }
-                        });
-                        session.getBasicRemote().sendText(SENT_MESSAGE);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, cec, new URI("ws://localhost:8025/websockets/board"));
+            client.connectToServer(new Client(), cec, new URI("ws://localhost:8025/websockets/board"));
             messageLatch.await(100, TimeUnit.SECONDS);
         } catch (Exception e) {
+        	System.out.println("Failed to contact server.");
             e.printStackTrace();
         }
 	}
-
-	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@OnOpen
 	public void onOpen(Session session) {
