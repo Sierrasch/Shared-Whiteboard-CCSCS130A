@@ -30,9 +30,9 @@ public class Client {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public static void main(String[] args) {
-		//DisplayFrame clientFrame = new DisplayFrame("Client");
+		DisplayFrame clientFrame = new DisplayFrame("Client");
 
-        try {
+        /*try {
             messageLatch = new CountDownLatch(1);
 
             final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
@@ -45,8 +45,9 @@ public class Client {
         }
         
         System.out.println("connected");
+        */
 	}
-
+	
 	@OnOpen
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
