@@ -30,20 +30,21 @@ public class Client {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public static void main(String[] args) {
-		DisplayFrame clientFrame = new DisplayFrame("Client");
+		//DisplayFrame clientFrame = new DisplayFrame("Client");
 
-        /*try {
+        try {
             messageLatch = new CountDownLatch(1);
 
             final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
             ClientManager client = ClientManager.createClient();
             client.connectToServer(new Client(), cec, new URI("ws://localhost:8025/websockets/board"));
-            messageLatch.await(100, TimeUnit.SECONDS);
         } catch (Exception e) {
         	System.out.println("Failed to contact server.");
             e.printStackTrace();
-        }*/
+        }
+        
+        System.out.println("connected");
 	}
 
 	@OnOpen

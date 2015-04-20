@@ -23,7 +23,7 @@ public class WhiteboardServer {
     }
     
     public void runServer() {
-    	Server server = new Server("localhost", 8025, "/websockets", WhiteboardServer.class);
+    	Server server = new Server("ws://localhost", 8025, "/websockets", WhiteboardServer.class);
     	
         try {
             server.start();
