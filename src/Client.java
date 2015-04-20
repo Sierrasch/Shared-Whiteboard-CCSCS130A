@@ -29,7 +29,7 @@ public class Client {
 	private static CountDownLatch messageLatch;
 
 	public static void main(String[] args) {
-		DisplayFrame clientFrame = new DisplayFrame("Client");
+		//DisplayFrame clientFrame = new DisplayFrame("Client");
 
         try {
             messageLatch = new CountDownLatch(1);
