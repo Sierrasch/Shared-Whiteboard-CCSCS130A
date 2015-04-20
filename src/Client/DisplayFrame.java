@@ -16,21 +16,17 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.apache.batik.swing.JSVGCanvas;
-
 import com.sun.xml.internal.ws.api.server.Container;
 
 public class DisplayFrame extends JFrame {
 	DrawPanel drawPanel;
 	JTextField userNameInput;
-	JSVGCanvas canvas;
 	Document svgDocument;
 
 	public DisplayFrame(String title) throws HeadlessException {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setupFrame();
-		setupSVG();
 		setSize(1000, 600);
 		setVisible(true);
 		while(true){
@@ -67,11 +63,5 @@ public class DisplayFrame extends JFrame {
 
 		buttonsPanel.add(loginPanel, BorderLayout.NORTH);
 		this.add(buttonsPanel, BorderLayout.EAST);
-	}
-
-	private void setupSVG(){
-		canvas = new JSVGCanvas();
-		canvas.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
-
 	}
 }
