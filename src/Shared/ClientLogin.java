@@ -1,4 +1,4 @@
-package Client.JSONClasses;
+package Shared;
 
 public class ClientLogin {
 	public String type;

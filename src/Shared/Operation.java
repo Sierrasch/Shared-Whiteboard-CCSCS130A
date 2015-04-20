@@ -1,4 +1,4 @@
-package Client.JSONClasses;
+package Shared;
 
 import java.util.HashMap;
 

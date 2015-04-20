@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import javax.websocket.ClientEndpoint;
@@ -25,35 +26,39 @@ import org.glassfish.tyrus.client.ClientManager;
 @ClientEndpoint
 public class Client {
 	private static final String SENT_MESSAGE = "Hello World";
+	private static CountDownLatch messageLatch;
 
 	public static void main(String[] args) {
 		DisplayFrame clientFrame = new DisplayFrame("Client");
 
-		try{
-			final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
+        try {
+            messageLatch = new CountDownLatch(1);
 
-			ClientManager client = ClientManager.createClient();
-			client.connectToServer(new Endpoint() {
+            final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
-				@Override
-				public void onOpen(Session session, EndpointConfig config) {
-					try {
-						session.addMessageHandler(new MessageHandler.Whole<String>() {
+            ClientManager client = ClientManager.createClient();
+            client.connectToServer(new Endpoint() {
+                @Override
+                public void onOpen(Session session, EndpointConfig config) {
+                    try {
+                        session.addMessageHandler(new MessageHandler.Whole<String>() {
 
-							@Override
-							public void onMessage(String message) {
-								System.out.println("Received message: " + message);
-							}
-						});
-						session.getBasicRemote().sendText(SENT_MESSAGE);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}, cec, new URI("ws://localhost:8025/websockets/echo"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+                            @Override
+                            public void onMessage(String message) {
+                                System.out.println("Received message: "+message);
+                                messageLatch.countDown();
+                            }
+                        });
+                        session.getBasicRemote().sendText(SENT_MESSAGE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, cec, new URI("ws://localhost:8025/websockets/board"));
+            messageLatch.await(100, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());

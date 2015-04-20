@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Logger;
  
+
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -12,17 +14,18 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
  
+
 import org.glassfish.tyrus.server.Server;
  
-@ServerEndpoint(value = "/game")
-public class Server {
+@ServerEndpoint(value = "/board")
+public class WhiteboardServer {
     public static void main(String[] args) {
         runServer();
     }
- 
+    
     public static void runServer() {
-        Server server = new Server("localhost", 8025, "/websockets", WordgameServerEndpoint.class);
- 
+        Server server = new Server("localhost", 8025, "/websockets", WhiteboardServer.class);
+        
         try {
             server.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
