@@ -27,8 +27,6 @@ import org.glassfish.tyrus.client.ClientManager;
 
 @ClientEndpoint
 public class Client implements ActionListener{
-	private static final String SENT_MESSAGE = "Hello World";
-	private static CountDownLatch messageLatch;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
 
@@ -36,26 +34,23 @@ public class Client implements ActionListener{
 		clientFrame = new DisplayFrame("Client", this);
 		System.out.println("Initialized");
 	}
-	
+
 	public void actionPerformed(ActionEvent event){
 		if(event.getSource() == clientFrame.loginButton){
+			setupClient(clientFrame.serverURIInput.getText(), clientFrame.userNameInput.getText());
 		}
 	}
 
-	public void setupClient(){
+	public void setupClient(String uri, String userName){
 		try {
-			messageLatch = new CountDownLatch(1);
-
 			final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
 			ClientManager client = ClientManager.createClient();
-			client.connectToServer(new Client(), cec, new URI("ws://localhost:8025/websockets/board"));
+			client.connectToServer(this, cec, new URI(uri));
 		} catch (Exception e) {
 			System.out.println("Failed to contact server.");
 			e.printStackTrace();
 		}
-
-		System.out.println("connected");
 	}
 
 	@OnOpen
@@ -70,14 +65,8 @@ public class Client implements ActionListener{
 
 	@OnMessage
 	public String onMessage(String message, Session session) {
-		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			logger.info("Received ...." + message);
-			String userInput = bufferRead.readLine();
-			return userInput;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		logger.info("Received ...." + message);
+		return "echo";
 	}
 
 	@OnClose
