@@ -1,5 +1,7 @@
 import Client.DisplayFrame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,30 +26,38 @@ import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 
 @ClientEndpoint
-public class Client {
+public class Client implements ActionListener{
 	private static final String SENT_MESSAGE = "Hello World";
 	private static CountDownLatch messageLatch;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private DisplayFrame clientFrame;
 
-	public static void main(String[] args) {
-		DisplayFrame clientFrame = new DisplayFrame("Client");
-
-        /*try {
-            messageLatch = new CountDownLatch(1);
-
-            final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
-
-            ClientManager client = ClientManager.createClient();
-            client.connectToServer(new Client(), cec, new URI("ws://localhost:8025/websockets/board"));
-        } catch (Exception e) {
-        	System.out.println("Failed to contact server.");
-            e.printStackTrace();
-        }
-        
-        System.out.println("connected");
-        */
+	public Client(){
+		clientFrame = new DisplayFrame("Client", this);
+		System.out.println("Initialized");
 	}
 	
+	public void actionPerformed(ActionEvent event){
+		if(event.getSource() == clientFrame.loginButton){
+		}
+	}
+
+	public void setupClient(){
+		try {
+			messageLatch = new CountDownLatch(1);
+
+			final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
+
+			ClientManager client = ClientManager.createClient();
+			client.connectToServer(new Client(), cec, new URI("ws://localhost:8025/websockets/board"));
+		} catch (Exception e) {
+			System.out.println("Failed to contact server.");
+			e.printStackTrace();
+		}
+
+		System.out.println("connected");
+	}
+
 	@OnOpen
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
@@ -73,5 +83,9 @@ public class Client {
 	@OnClose
 	public void onClose(Session session, CloseReason closeReason) {
 		logger.info(String.format("Session %s close because of %s", session.getId(), closeReason));
+	}
+
+	public static void main(String[] args) {
+		Client me = new Client();
 	}
 }

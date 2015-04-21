@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import org.glassfish.tyrus.server.Server;
 
+import Shared.SourceObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 

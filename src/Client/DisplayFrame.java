@@ -8,6 +8,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,49 +26,18 @@ public class DisplayFrame extends JFrame {
 	JTextField userNameInput;
 	JTextField serverURIInput;
 	Document svgDocument;
+	public JButton loginButton;
 
-	public DisplayFrame(String title) throws HeadlessException {
+	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setupFrame();
+		loginButton.addActionListener(parent);
 		setSize(1000, 600);
 		setVisible(true);
-		while(true){
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			drawPanel.repaint();
-		}
+		repaint();
 	}
 
-	/*private void setupFrame(){
-		this.setLayout(new BorderLayout());
-
-		drawPanel = new DrawPanel();
-		drawPanel.setBackground(Color.BLACK);
-		this.add(drawPanel, BorderLayout.CENTER);
-
-		drawPanel.repaint();
-
-		JPanel buttonsPanel = new JPanel();
-		JPanel loginPanel = new JPanel();
-		buttonsPanel.setLayout(new BorderLayout());
-		buttonsPanel.setBackground(Color.WHITE);
-
-		JLabel userNameLabel = new JLabel("Username: ");
-		userNameInput = new JTextField();
-		userNameInput.setColumns(15);
-		loginPanel.setLayout(new FlowLayout());
-		loginPanel.add(userNameLabel);
-		loginPanel.add(userNameInput);
-
-		buttonsPanel.add(loginPanel, BorderLayout.NORTH);
-		this.add(buttonsPanel, BorderLayout.EAST);
-	}
-}
-*/
 	private void setupFrame(){
 		this.setLayout(new BorderLayout());
 
@@ -87,7 +58,7 @@ public class DisplayFrame extends JFrame {
 
 		JLabel userNameLabel = new JLabel("Username: ");
 		JLabel serverURILabel = new JLabel("Server URI: ");
-		JButton loginButton = new JButton("Login");
+		loginButton = new JButton("Login");
 		userNameInput = new JTextField();
 		userNameInput.setColumns(15);
 		serverURIInput = new JTextField();
