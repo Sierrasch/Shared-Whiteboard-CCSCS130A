@@ -17,14 +17,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import Shared.Element;
+
 import com.sun.xml.internal.ws.api.server.Container;
+
 
 public class DisplayFrame extends JFrame {
 	DrawPanel drawPanel;
 	JTextField userNameInput;
 	JTextField serverURIInput;
 	Document svgDocument;
-
+	Element[] myElements;
+	
 	public DisplayFrame(String title) throws HeadlessException {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,32 +45,6 @@ public class DisplayFrame extends JFrame {
 		}
 	}
 
-	/*private void setupFrame(){
-		this.setLayout(new BorderLayout());
-
-		drawPanel = new DrawPanel();
-		drawPanel.setBackground(Color.BLACK);
-		this.add(drawPanel, BorderLayout.CENTER);
-
-		drawPanel.repaint();
-
-		JPanel buttonsPanel = new JPanel();
-		JPanel loginPanel = new JPanel();
-		buttonsPanel.setLayout(new BorderLayout());
-		buttonsPanel.setBackground(Color.WHITE);
-
-		JLabel userNameLabel = new JLabel("Username: ");
-		userNameInput = new JTextField();
-		userNameInput.setColumns(15);
-		loginPanel.setLayout(new FlowLayout());
-		loginPanel.add(userNameLabel);
-		loginPanel.add(userNameInput);
-
-		buttonsPanel.add(loginPanel, BorderLayout.NORTH);
-		this.add(buttonsPanel, BorderLayout.EAST);
-	}
-}
-*/
 	private void setupFrame(){
 		this.setLayout(new BorderLayout());
 
