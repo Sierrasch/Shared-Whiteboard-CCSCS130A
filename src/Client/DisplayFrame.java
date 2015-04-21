@@ -19,7 +19,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import Shared.Element;
+
 import com.sun.xml.internal.ws.api.server.Container;
+
 
 public class DisplayFrame extends JFrame {
 	DrawPanel drawPanel;
@@ -27,7 +30,8 @@ public class DisplayFrame extends JFrame {
 	JTextField serverURIInput;
 	Document svgDocument;
 	public JButton loginButton;
-
+	Element[] myElements;
+	
 	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
