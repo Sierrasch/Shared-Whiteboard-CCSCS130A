@@ -26,8 +26,8 @@ import com.sun.xml.internal.ws.api.server.Container;
 
 public class DisplayFrame extends JFrame {
 	DrawPanel drawPanel;
-	JTextField userNameInput;
-	JTextField serverURIInput;
+	public JTextField userNameInput;
+	public JTextField serverURIInput;
 	Document svgDocument;
 	public JButton loginButton;
 	Element[] myElements;
