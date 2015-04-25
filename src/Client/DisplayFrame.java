@@ -67,6 +67,7 @@ public class DisplayFrame extends JFrame {
 		userNameInput.setColumns(15);
 		serverURIInput = new JTextField();
 		serverURIInput.setColumns(15);
+		serverURIInput.setText("ws://0.0.0.0:8025/websockets/board");
 
 
 		loginPanel1.setLayout(new FlowLayout());

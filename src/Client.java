@@ -1,5 +1,6 @@
 import Client.DisplayFrame;
 import Shared.ClientLogin;
+import Shared.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,11 +27,14 @@ import javax.websocket.Session;
 
 import org.glassfish.tyrus.client.ClientManager;
 
+import com.google.gson.Gson;
+
 @ClientEndpoint
 public class Client implements ActionListener{
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
 	Session activeSession = null;
+	Gson gson = util.getGSON();
 
 	public Client(){
 		clientFrame = new DisplayFrame("Client", this);
@@ -48,7 +52,14 @@ public class Client implements ActionListener{
 			final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
 			ClientManager client = ClientManager.createClient();
-			client.connectToServer(this, cec, new URI(uri));
+			Session newSession = client.connectToServer(this, cec, new URI(uri));
+			ClientLogin login = new ClientLogin(userName);
+			if(activeSession != null){
+				activeSession.close();
+			}
+			activeSession = newSession;
+			activeSession.getBasicRemote().sendText(gson.toJson(login));
+			
 		} catch (Exception e) {
 			System.out.println("Failed to contact server.");
 			e.printStackTrace();
@@ -58,17 +69,6 @@ public class Client implements ActionListener{
 	@OnOpen
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
-		try {
-			ClientLogin login = new ClientLogin("David Bernadett");
-			session.getBasicRemote().sendText("start");
-			if(activeSession != null){
-				activeSession.close();
-			}
-			activeSession = session;
-			
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	@OnMessage

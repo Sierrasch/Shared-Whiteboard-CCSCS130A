@@ -4,7 +4,11 @@ import java.util.logging.Logger;
 
 import org.glassfish.tyrus.server.Server;
 
+import com.google.gson.Gson;
+
 import Shared.SourceObject;
+import Shared.TypeIdentifier;
+import Shared.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,6 +23,7 @@ import javax.websocket.server.ServerEndpoint;
  
 @ServerEndpoint(value = "/board")
 public class WhiteboardServer {
+	Gson gson = util.getGSON();
     public static void main(String[] args) {
     	WhiteboardServer whiteboard = new WhiteboardServer();
         whiteboard.runServer();
@@ -49,15 +54,29 @@ public class WhiteboardServer {
  
     @OnMessage
     public String onMessage(String message, Session session) {
-        switch (message) {
-        case "quit":
-            try {
+    	TypeIdentifier typeID = gson.fromJson(message, TypeIdentifier.class);
+    	
+        switch (typeID.type) {
+        case "join":
+        	break;
+        case "insert":
+        	break;
+        case "delete":
+        	break;
+        case "modify":
+        	break;
+        case "user_connect":
+            break;
+        case "user_disconnect":
+        	try {
                 session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            break;
-        }
+        	break;
+    	}
+        
+        System.out.println("Recieved Message with type: " + typeID.type);
         return null;
     }
  
