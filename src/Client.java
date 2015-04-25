@@ -1,4 +1,5 @@
 import Client.DisplayFrame;
+import Shared.ClientLogin;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ import org.glassfish.tyrus.client.ClientManager;
 public class Client implements ActionListener{
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
+	Session activeSession = null;
 
 	public Client(){
 		clientFrame = new DisplayFrame("Client", this);
@@ -57,7 +59,13 @@ public class Client implements ActionListener{
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
 		try {
+			ClientLogin login = new ClientLogin("David Bernadett");
 			session.getBasicRemote().sendText("start");
+			if(activeSession != null){
+				activeSession.close();
+			}
+			activeSession = session;
+			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -66,7 +74,7 @@ public class Client implements ActionListener{
 	@OnMessage
 	public String onMessage(String message, Session session) {
 		logger.info("Received ...." + message);
-		return "echo";
+		return null;
 	}
 
 	@OnClose

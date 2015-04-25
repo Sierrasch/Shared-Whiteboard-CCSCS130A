@@ -58,7 +58,7 @@ public class WhiteboardServer {
             }
             break;
         }
-        return message;
+        return null;
     }
  
     @OnClose
