@@ -58,6 +58,18 @@ public class ElementContainer {
 		Element el = new Element(iO);
 		return put(el);
 	}
+	
+	/* Removes the element with the specified key (user+tracker) from the
+	 * data structure. Returns true if the structure actually contained
+	 * this key or false if it did not.
+	 */
+	public synchronized boolean remove(String key){
+		return elements.remove(key) != null;
+	}
+	
+	public synchronized boolean remove(SourceObject src){
+		return elements.remove(src.user + src.tracker) != null;
+	}
 
 	/* Returns an Iterator that can be used to iterate over all of the
 	 * elements (shapes) in the white board.
