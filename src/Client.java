@@ -61,7 +61,7 @@ public class Client implements ActionListener{
 			}
 			activeSession = newSession;
 			activeSession.getBasicRemote().sendText(gson.toJson(login));
-			
+
 		} catch (Exception e) {
 			System.out.println("Failed to contact server.");
 			e.printStackTrace();
@@ -75,32 +75,32 @@ public class Client implements ActionListener{
 
 	@OnMessage
 	public String onMessage(String message, Session session) {
-TypeIdentifier typeID = gson.fromJson(message, TypeIdentifier.class);
-    	
-        switch (typeID.type) {
-        case "init":
-        	break;
-        case "failed":
-        	break;
-        case "insert":
-        	break;
-        case "delete":
-        	break;
-        case "modify":
-        	break;
-        case "user_connect":
-            break;
-        case "user_disconnect":
-        	try {
-                session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        	break;
-    	}
-        
-        System.out.println("Recieved Message with type: " + typeID.type);
-        return null;
+		TypeIdentifier typeID = gson.fromJson(message, TypeIdentifier.class);
+
+		switch (typeID.type) {
+		case "init":
+			break;
+		case "failed":
+			break;
+		case "insert":
+			break;
+		case "delete":
+			break;
+		case "modify":
+			break;
+		case "user_connect":
+			break;
+		case "user_disconnect":
+			try {
+				session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			break;
+		}
+
+		System.out.println("Recieved Message with type: " + typeID.type);
+		return null;
 	}
 
 	@OnClose
