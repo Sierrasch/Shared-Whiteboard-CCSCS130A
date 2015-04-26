@@ -1,5 +1,6 @@
 import Client.DisplayFrame;
 import Shared.ClientLogin;
+import Shared.TypeIdentifier;
 import Shared.util;
 
 import java.awt.event.ActionEvent;
@@ -24,6 +25,7 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.CloseReason.CloseCodes;
 
 import org.glassfish.tyrus.client.ClientManager;
 
@@ -73,8 +75,32 @@ public class Client implements ActionListener{
 
 	@OnMessage
 	public String onMessage(String message, Session session) {
-		logger.info("Received ...." + message);
-		return null;
+TypeIdentifier typeID = gson.fromJson(message, TypeIdentifier.class);
+    	
+        switch (typeID.type) {
+        case "init":
+        	break;
+        case "failed":
+        	break;
+        case "insert":
+        	break;
+        case "delete":
+        	break;
+        case "modify":
+        	break;
+        case "user_connect":
+            break;
+        case "user_disconnect":
+        	try {
+                session.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "Game ended"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        	break;
+    	}
+        
+        System.out.println("Recieved Message with type: " + typeID.type);
+        return null;
 	}
 
 	@OnClose

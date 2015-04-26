@@ -6,8 +6,14 @@ import org.glassfish.tyrus.server.Server;
 
 import com.google.gson.Gson;
 
+import Operations.deleteOperation;
+import Operations.insertOperation;
+import Operations.modifyOperation;
+import Server.serverProcessor;
+import Shared.ClientLogin;
 import Shared.SourceObject;
 import Shared.TypeIdentifier;
+import Shared.operationProcessor;
 import Shared.util;
 
 import java.io.BufferedReader;
@@ -23,12 +29,12 @@ import javax.websocket.server.ServerEndpoint;
  
 @ServerEndpoint(value = "/board")
 public class WhiteboardServer {
-	Gson gson = util.getGSON();
-    public static void main(String[] args) {
-    	WhiteboardServer whiteboard = new WhiteboardServer();
-        whiteboard.runServer();
-    }
+	private serverProcessor processor;
+	private Gson gson = util.getGSON();
     
+    public WhiteboardServer () {
+    	processor = new serverProcessor();
+    }
     public void runServer() {
     	Server server = new Server("ws://localhost", 8025, "/websockets", WhiteboardServer.class);
     	
@@ -54,16 +60,24 @@ public class WhiteboardServer {
  
     @OnMessage
     public String onMessage(String message, Session session) {
-    	TypeIdentifier typeID = gson.fromJson(message, TypeIdentifier.class);
+    	String type = util.getType(message,gson);
     	
-        switch (typeID.type) {
+        switch (type) {
         case "join":
+        	ClientLogin loginInfo = gson.fromJson(message, ClientLogin.class);
+        	processor.join(loginInfo,session);
         	break;
         case "insert":
+        	insertOperation insert = gson.fromJson(message, insertOperation.class);
+        	processor.insert(insert,session);
         	break;
         case "delete":
+        	deleteOperation delete = gson.fromJson(message, deleteOperation.class);
+        	processor.delete(delete,session);
         	break;
         case "modify":
+        	modifyOperation modify = gson.fromJson(message, modifyOperation.class);
+        	processor.modify(modify,session);
         	break;
         case "user_connect":
             break;
@@ -76,12 +90,17 @@ public class WhiteboardServer {
         	break;
     	}
         
-        System.out.println("Recieved Message with type: " + typeID.type);
+        System.out.println("Recieved Message with type: " + type);
         return null;
     }
  
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));
+    }
+    
+    public static void main(String[] args) {
+    	WhiteboardServer whiteboard = new WhiteboardServer();
+        whiteboard.runServer();
     }
 }
