@@ -103,7 +103,7 @@ public class DisplayFrame extends JFrame {
 		chatPanel.add(chatScrollPane, BorderLayout.CENTER);
 		chatEntry = new JTextField();
 		chatPanel.add(chatEntry, BorderLayout.SOUTH);
-
+		
 		buttonsPanel.add(loginPanelMain, BorderLayout.NORTH);
 		//buttonsPanel.add(loginPanel3, BorderLayout.CENTER);
 		buttonsPanel.add(chatPanel, BorderLayout.CENTER);

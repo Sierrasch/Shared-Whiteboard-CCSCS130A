@@ -41,7 +41,7 @@ public class Client implements ActionListener{
 
 	public Client(){
 		clientFrame = new DisplayFrame("Client", this);
-		System.out.println("Initialized");
+		System.out.println("InitializedClient");
 	}
 
 	public void actionPerformed(ActionEvent event){
@@ -50,8 +50,12 @@ public class Client implements ActionListener{
 		}
 		else if(event.getSource() == clientFrame.chatEntry){
 			if(clientFrame.chatEntry.getText().equals("")) return;
-			clientFrame.appendToPane("User: ", Color.RED);
-			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);
+			/*clientFrame.appendToPane("User: ", Color.RED);
+			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);*/
+			
+			// Adding text to the chat panel should actually be handlex exclusively on receiving a message
+			// in order to ensure that the message order is the same on every client.
+			sendChat(clientFrame.chatEntry.getText());
 			clientFrame.chatEntry.setText("");
 			System.out.println(event.getActionCommand());
 			System.out.println(event.getActionCommand().charAt(event.getActionCommand().length()-1));
