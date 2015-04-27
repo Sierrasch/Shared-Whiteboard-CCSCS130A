@@ -100,7 +100,6 @@ public class DisplayFrame extends JFrame {
 		JScrollPane chatScrollPane = new JScrollPane(chatArea,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		chatScrollPane.setPreferredSize(new Dimension(25, 40));
 		chatPanel.add(chatScrollPane, BorderLayout.CENTER);
 		chatEntry = new JTextField();
 		chatPanel.add(chatEntry, BorderLayout.SOUTH);
