@@ -32,6 +32,9 @@ public class DisplayFrame extends JFrame {
 	public JTextField userNameInput;
 	public JTextField serverURIInput;
 	public JButton loginButton;
+	public JButton rectButton;
+	public JButton ellipseButton;
+	public JButton fillButton;
 	Element[] myElements;
 	JTextPane chatArea;
 	public JTextField chatEntry;
@@ -53,6 +56,9 @@ public class DisplayFrame extends JFrame {
 		chatEntry.addActionListener(parent);
 		drawPanel.addMouseListener((MouseListener) parent);
 		drawPanel.addMouseMotionListener((MouseMotionListener) parent);
+		rectButton.addActionListener(parent);
+		ellipseButton.addActionListener(parent);
+		fillButton.addActionListener(parent);
 		setSize(1000, 600);
 		setVisible(true);
 		repaint();
@@ -97,6 +103,14 @@ public class DisplayFrame extends JFrame {
 		loginPanelMain.add(loginPanel1, BorderLayout.NORTH);
 		loginPanelMain.add(loginPanel2, BorderLayout.CENTER);
 		loginPanelMain.add(loginPanel3, BorderLayout.SOUTH);
+		
+		JPanel bPannel = new JPanel();
+		rectButton = new JButton("Rectangle");
+		ellipseButton = new JButton("Ellipse");
+		fillButton = new JButton("Fill: OFF");
+		bPannel.add(rectButton);
+		bPannel.add(ellipseButton);
+		bPannel.add(fillButton);
 
 		JPanel chatPanel = new JPanel();
 		chatPanel.setLayout(new BorderLayout());
@@ -113,6 +127,7 @@ public class DisplayFrame extends JFrame {
 		buttonsPanel.add(loginPanelMain, BorderLayout.NORTH);
 		//buttonsPanel.add(loginPanel3, BorderLayout.CENTER);
 		buttonsPanel.add(chatPanel, BorderLayout.CENTER);
+		buttonsPanel.add(bPannel, BorderLayout.SOUTH);
 		this.add(buttonsPanel, BorderLayout.EAST);
 	}
 

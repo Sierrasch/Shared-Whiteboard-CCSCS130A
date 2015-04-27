@@ -47,8 +47,13 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	Session activeSession = null;
 	Gson gson = util.getGSON();
 	boolean drawing = false;
-	private long tempCounter = -1;
+	private int tempCounter = -1;
 	ElementContainer elements;
+	int startX;
+	int startY;
+	final String tempUser = "@tEmP@";
+	String currentShape = "";
+	boolean fill = true;
 
 	public Client(){
 		elements = new ElementContainer();
@@ -64,35 +69,64 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			if(clientFrame.chatEntry.getText().equals("")) return;
 			/*clientFrame.appendToPane("User: ", Color.RED);
 			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);*/
-			
-			// Adding text to the chat panel should actually be handlex exclusively on receiving a message
+
+			// Adding text to the chat panel should actually be handled exclusively on receiving a message
 			// in order to ensure that the message order is the same on every client.
 			Communicator.sendChat(clientFrame.chatEntry.getText());
 			clientFrame.chatEntry.setText("");
 			System.out.println(event.getActionCommand());
 			System.out.println(event.getActionCommand().charAt(event.getActionCommand().length()-1));
 		}
+		else if(event.getSource() == clientFrame.rectButton){
+			currentShape = "rect";
+		}
+		else if(event.getSource() == clientFrame.ellipseButton){
+			currentShape = "ellipse";
+		}
+		else if(event.getSource() == clientFrame.fillButton){
+			fill = !fill;
+			if(fill){
+				clientFrame.fillButton.setText("Fill: ON");
+			}
+			else{
+				clientFrame.fillButton.setText("Fill: OFF");
+			}
+		}
 	}
-	
+
 	// TODO: Drawing functionality not fully implemented yet.
 	public void mousePressed(MouseEvent event){
 		drawing = true;
 	}
-	
+
 	public void mouseDragged(MouseEvent e){
+		elements.remove(tempUser + tempCounter);
+		tempCounter--;
 		
+		if(drawing){
+			if(currentShape.equals("rect")){
+				String[] keys = {"x", "y", "width", "height", "fill"};
+				String[] vals = {(startX < e.getX() ? startX : e.getX()) + "",
+						(startY < e.getY() ? startY : e.getY()) + "",
+						Math.abs(startX - e.getX()) + "",
+						Math.abs(startY - e.getY()) + "",
+						(fill ? "BLACK" : null)};	
+				elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
+			}
+		}
 	}
-	
+
 	public void mouseReleased(MouseEvent event){
 		drawing = false;
-		
+		elements.remove(tempUser + tempCounter);
 		Communicator.addElement(new Element(null));	// This needs to be implemented in communicator.
 	}
-	
+
 	public void mouseExited(MouseEvent event){
+		elements.remove(tempUser + tempCounter);
 		drawing = false;
 	}
-	
+
 	public void mouseEntered(MouseEvent event){}
 	public void mouseClicked(MouseEvent event){}
 	public void mouseMoved(MouseEvent event){}
@@ -115,7 +149,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			System.out.println("Failed to contact server.");
 			e.printStackTrace();
 		}
-		
+
 		try {
 			mySession.getBasicRemote().sendText("Hello!");
 			mySession.getBasicRemote().sendText("quit");
