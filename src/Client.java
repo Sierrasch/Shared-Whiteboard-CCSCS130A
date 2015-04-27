@@ -49,6 +49,7 @@ public class Client implements ActionListener{
 			setupClient(clientFrame.serverURIInput.getText(), clientFrame.userNameInput.getText());
 		}
 		else if(event.getSource() == clientFrame.chatEntry){
+			if(clientFrame.chatEntry.getText().equals("")) return;
 			clientFrame.appendToPane("User: ", Color.RED);
 			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);
 			clientFrame.chatEntry.setText("");
