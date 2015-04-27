@@ -27,7 +27,7 @@ import Shared.Element;
 import Shared.ElementContainer;
 
 
-public class DisplayFrame extends JFrame {
+public class DisplayFrame extends JFrame{
 	DrawPanel drawPanel;
 	public JTextField userNameInput;
 	public JTextField serverURIInput;
@@ -35,11 +35,10 @@ public class DisplayFrame extends JFrame {
 	Element[] myElements;
 	JTextPane chatArea;
 	public JTextField chatEntry;
-	ElementContainer elements;
+	public ElementContainer elements = new ElementContainer();
 
-	public DisplayFrame(String title, ElementContainer els, ActionListener parent) throws HeadlessException {
+	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
 		super(title);
-		elements = els;
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -64,7 +63,6 @@ public class DisplayFrame extends JFrame {
 		drawPanel = new DrawPanel(elements);
 		drawPanel.setBackground(Color.BLACK);
 		this.add(drawPanel, BorderLayout.CENTER);
-
 		drawPanel.repaint();
 
 		JPanel buttonsPanel = new JPanel();
@@ -130,5 +128,11 @@ public class DisplayFrame extends JFrame {
 		chatArea.setCharacterAttributes(aset, false);
 		chatArea.replaceSelection(msg);
 		chatArea.setEditable(false);
+	}
+	public void repaint(){
+		drawPanel.setElements(elements);
+		drawPanel.repaint();
+		super.repaint();
+		
 	}
 }

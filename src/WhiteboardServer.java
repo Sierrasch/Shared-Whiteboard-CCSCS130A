@@ -11,6 +11,7 @@ import Operations.insertOperation;
 import Operations.modifyOperation;
 import Server.serverProcessor;
 import Shared.ClientLogin;
+import Shared.ElementContainer;
 import Shared.SourceObject;
 import Shared.TypeIdentifier;
 import Shared.operationProcessor;
@@ -31,9 +32,10 @@ import javax.websocket.server.ServerEndpoint;
 public class WhiteboardServer {
 	private serverProcessor processor;
 	private Gson gson = util.getGSON();
-    
+    private ElementContainer ec;
     public WhiteboardServer () {
     	processor = new serverProcessor();
+    	ec =  new ElementContainer();
     }
     public void runServer() {
     	Server server = new Server("ws://localhost", 8025, "/websockets", WhiteboardServer.class);
@@ -65,19 +67,19 @@ public class WhiteboardServer {
         switch (type) {
         case "join":
         	ClientLogin loginInfo = gson.fromJson(message, ClientLogin.class);
-        	processor.join(loginInfo,session);
+        	processor.join(loginInfo,session,ec);
         	break;
         case "insert":
         	insertOperation insert = gson.fromJson(message, insertOperation.class);
-        	processor.insert(insert,session);
+        	processor.recieveInsert(insert,session,ec);
         	break;
         case "delete":
         	deleteOperation delete = gson.fromJson(message, deleteOperation.class);
-        	processor.delete(delete,session);
+        	processor.recieveDelete(delete,session,ec);
         	break;
         case "modify":
         	modifyOperation modify = gson.fromJson(message, modifyOperation.class);
-        	processor.modify(modify,session);
+        	processor.recieveModify(modify,session,ec);
         	break;
         case "user_connect":
             break;

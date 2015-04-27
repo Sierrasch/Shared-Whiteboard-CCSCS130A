@@ -3,6 +3,7 @@ package Shared;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
 
@@ -17,11 +18,11 @@ public class util {
 	}
 
 
-	public static void drawObjects(Element[] objects, Graphics g){
+	public static void drawObjects(Iterator<Element> iterator, Graphics g){
 		g.setColor(new Color(255,255,255));
-		for(int i = 0; i < objects.length; i++){
-			HashMap<String, String> map = objects[i].attributes;
-
+		while(iterator.hasNext()){
+			Element e = iterator.next();
+			
 			int x = -1;
 			int y = -1;
 			int width = -1;
@@ -31,7 +32,7 @@ public class util {
 			int rx = -1;
 			int ry = -1;
 
-			for(HashMap.Entry<String, String> entry : map.entrySet()){
+			for(HashMap.Entry<String, String> entry : e.attributes.entrySet()){
 				switch(entry.getKey()){
 				case "x":
 					x = Integer.parseInt(entry.getValue());
@@ -52,7 +53,7 @@ public class util {
 				}
 			}
 
-			switch(objects[i].element_type){
+			switch(e.element_type){
 			case "rect":
 				if(x != -1 && y != -1 && width != -1 && height != -1){	
 					g.drawRect(x, y, width, height);
@@ -65,7 +66,7 @@ public class util {
 				break;
 			case "text":
 				if(x!= 0 && y!= 0){
-					g.drawString(objects[i].data, x, y);
+					g.drawString(e.data, x, y);
 				}
 				break;
 			case "path":
