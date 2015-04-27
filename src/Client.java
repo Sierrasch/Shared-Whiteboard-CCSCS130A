@@ -51,7 +51,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	ElementContainer elements;
 
 	public Client(){
-		clientFrame = new DisplayFrame("Client", this);
 		elements = new ElementContainer();
 		clientFrame = new DisplayFrame("Client", elements, this);
 		System.out.println("InitializedClient");
@@ -158,7 +157,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		}
 
 		System.out.println("Recieved Message with type: " + typeID.type);
-		return null;
 	}
 
 	@OnClose
