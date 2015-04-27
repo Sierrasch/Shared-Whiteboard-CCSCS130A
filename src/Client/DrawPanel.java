@@ -11,14 +11,18 @@ import javax.swing.JPanel;
 import com.google.gson.Gson;
 
 import Shared.Element;
+import Shared.ElementContainer;
 import Shared.TypeIdentifier;
 import Shared.util;
 
 public class DrawPanel extends JPanel {
 	ArrayList<Element> elements;
-	public DrawPanel() {
+	ElementContainer eLeMeNtS = new ElementContainer();
+	
+	public DrawPanel(ElementContainer e) {
 		super(true);
 		elements = new ArrayList<Element>();
+		eLeMeNtS = e;
 	}
 	
 	public void paintComponent(Graphics g){

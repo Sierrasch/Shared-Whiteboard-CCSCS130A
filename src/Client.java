@@ -1,11 +1,18 @@
 import Client.DisplayFrame;
+import Client.Communicator;
 import Shared.ClientLogin;
+import Shared.Element;
+import Shared.ElementContainer;
 import Shared.TypeIdentifier;
 import Shared.util;
+import Client.Communicator;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,14 +40,18 @@ import org.glassfish.tyrus.client.ClientManager;
 import com.google.gson.Gson;
 
 @ClientEndpoint
-public class Client implements ActionListener{
+public class Client implements MouseListener, MouseMotionListener, ActionListener{
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
 	Session activeSession = null;
 	Gson gson = util.getGSON();
+	boolean drawing = false;
+	private long tempCounter = -1;
+	ElementContainer elements;
 
 	public Client(){
-		clientFrame = new DisplayFrame("Client", this);
+		elements = new ElementContainer();
+		clientFrame = new DisplayFrame("Client", elements, this);
 		System.out.println("InitializedClient");
 	}
 
@@ -55,12 +66,35 @@ public class Client implements ActionListener{
 			
 			// Adding text to the chat panel should actually be handlex exclusively on receiving a message
 			// in order to ensure that the message order is the same on every client.
-			sendChat(clientFrame.chatEntry.getText());
+			Communicator.sendChat(clientFrame.chatEntry.getText());
 			clientFrame.chatEntry.setText("");
 			System.out.println(event.getActionCommand());
 			System.out.println(event.getActionCommand().charAt(event.getActionCommand().length()-1));
 		}
 	}
+	
+	// TODO: Drawing functionality not fully implemented yet.
+	public void mousePressed(MouseEvent event){
+		drawing = true;
+	}
+	
+	public void mouseDragged(MouseEvent e){
+		
+	}
+	
+	public void mouseReleased(MouseEvent event){
+		drawing = false;
+		
+		Communicator.addElement(new Element(null));	// This needs to be implemented in communicator.
+	}
+	
+	public void mouseExited(MouseEvent event){
+		drawing = false;
+	}
+	
+	public void mouseEntered(MouseEvent event){}
+	public void mouseClicked(MouseEvent event){}
+	public void mouseMoved(MouseEvent event){}
 
 	public void setupClient(String uri, String userName){
 		try {

@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -22,6 +24,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import Shared.Element;
+import Shared.ElementContainer;
 
 
 public class DisplayFrame extends JFrame {
@@ -32,9 +35,11 @@ public class DisplayFrame extends JFrame {
 	Element[] myElements;
 	JTextPane chatArea;
 	public JTextField chatEntry;
+	ElementContainer elements;
 
-	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
+	public DisplayFrame(String title, ElementContainer els, ActionListener parent) throws HeadlessException {
 		super(title);
+		elements = els;
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -46,6 +51,8 @@ public class DisplayFrame extends JFrame {
 		setupFrame();
 		loginButton.addActionListener(parent);
 		chatEntry.addActionListener(parent);
+		drawPanel.addMouseListener((MouseListener) parent);
+		drawPanel.addMouseMotionListener((MouseMotionListener) parent);
 		setSize(1000, 600);
 		setVisible(true);
 		repaint();
@@ -54,7 +61,7 @@ public class DisplayFrame extends JFrame {
 	private void setupFrame(){
 		this.setLayout(new BorderLayout());
 
-		drawPanel = new DrawPanel();
+		drawPanel = new DrawPanel(elements);
 		drawPanel.setBackground(Color.BLACK);
 		this.add(drawPanel, BorderLayout.CENTER);
 
@@ -77,7 +84,6 @@ public class DisplayFrame extends JFrame {
 		serverURIInput = new JTextField();
 		serverURIInput.setColumns(25);
 		serverURIInput.setText("ws://0.0.0.0:8025/websockets/board");
-
 
 		loginPanel1.setLayout(new FlowLayout());
 		loginPanel2.setLayout(new FlowLayout());

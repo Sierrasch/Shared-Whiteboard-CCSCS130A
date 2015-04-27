@@ -13,6 +13,7 @@ public class Element {
 	public SourceObject src;
 	
 	public Element(insertOperation iO){
+		if(iO == null) return;
 		element_type = iO.element_type;
 		data = iO.data;
 		node_id = iO.node_id;
