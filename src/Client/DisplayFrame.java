@@ -10,33 +10,42 @@ import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 import Shared.Element;
-
-import com.sun.xml.internal.ws.api.server.Container;
 
 
 public class DisplayFrame extends JFrame {
 	DrawPanel drawPanel;
 	public JTextField userNameInput;
 	public JTextField serverURIInput;
-	Document svgDocument;
 	public JButton loginButton;
 	Element[] myElements;
-	
+	JTextPane chatArea;
+	public JTextField chatEntry;
+
 	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
 		super(title);
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setupFrame();
 		loginButton.addActionListener(parent);
+		chatEntry.addActionListener(parent);
 		setSize(1000, 600);
 		setVisible(true);
 		repaint();
@@ -64,9 +73,9 @@ public class DisplayFrame extends JFrame {
 		JLabel serverURILabel = new JLabel("Server URI: ");
 		loginButton = new JButton("Login");
 		userNameInput = new JTextField();
-		userNameInput.setColumns(15);
+		userNameInput.setColumns(25);
 		serverURIInput = new JTextField();
-		serverURIInput.setColumns(15);
+		serverURIInput.setColumns(25);
 		serverURIInput.setText("ws://0.0.0.0:8025/websockets/board");
 
 
@@ -81,8 +90,40 @@ public class DisplayFrame extends JFrame {
 
 		loginPanelMain.add(loginPanel1, BorderLayout.NORTH);
 		loginPanelMain.add(loginPanel2, BorderLayout.CENTER);
+		loginPanelMain.add(loginPanel3, BorderLayout.SOUTH);
+
+		JPanel chatPanel = new JPanel();
+		chatPanel.setLayout(new BorderLayout());
+		chatArea = new JTextPane();
+		chatArea.setEditable(false);
+		appendToPane("Hello User!\n", Color.BLUE);
+		JScrollPane chatScrollPane = new JScrollPane(chatArea,
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		chatScrollPane.setPreferredSize(new Dimension(25, 40));
+		chatPanel.add(chatScrollPane, BorderLayout.CENTER);
+		chatEntry = new JTextField();
+		chatPanel.add(chatEntry, BorderLayout.SOUTH);
+
 		buttonsPanel.add(loginPanelMain, BorderLayout.NORTH);
-		buttonsPanel.add(loginPanel3, BorderLayout.CENTER);
+		//buttonsPanel.add(loginPanel3, BorderLayout.CENTER);
+		buttonsPanel.add(chatPanel, BorderLayout.CENTER);
 		this.add(buttonsPanel, BorderLayout.EAST);
+	}
+
+	public void appendToPane(String msg, Color c)
+	{
+		chatArea.setEditable(true);
+		StyleContext sc = StyleContext.getDefaultStyleContext();
+		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+		aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+		aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+		int len = chatArea.getDocument().getLength();
+		chatArea.setCaretPosition(len);
+		chatArea.setCharacterAttributes(aset, false);
+		chatArea.replaceSelection(msg);
+		chatArea.setEditable(false);
 	}
 }

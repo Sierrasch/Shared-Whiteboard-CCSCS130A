@@ -3,6 +3,7 @@ import Shared.ClientLogin;
 import Shared.TypeIdentifier;
 import Shared.util;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -46,6 +47,13 @@ public class Client implements ActionListener{
 	public void actionPerformed(ActionEvent event){
 		if(event.getSource() == clientFrame.loginButton){
 			setupClient(clientFrame.serverURIInput.getText(), clientFrame.userNameInput.getText());
+		}
+		else if(event.getSource() == clientFrame.chatEntry){
+			clientFrame.appendToPane("User: ", Color.RED);
+			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);
+			clientFrame.chatEntry.setText("");
+			System.out.println(event.getActionCommand());
+			System.out.println(event.getActionCommand().charAt(event.getActionCommand().length()-1));
 		}
 	}
 
