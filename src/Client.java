@@ -29,10 +29,10 @@ import org.glassfish.tyrus.client.ClientManager;
 public class Client implements ActionListener{
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
+	Session mySession;
 
 	public Client(){
 		clientFrame = new DisplayFrame("Client", this);
-		System.out.println("Initialized");
 	}
 
 	public void actionPerformed(ActionEvent event){
@@ -46,9 +46,16 @@ public class Client implements ActionListener{
 			final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
 			ClientManager client = ClientManager.createClient();
-			client.connectToServer(this, cec, new URI(uri));
+			mySession = client.connectToServer(this, cec, new URI(uri));
 		} catch (Exception e) {
 			System.out.println("Failed to contact server.");
+			e.printStackTrace();
+		}
+		
+		try {
+			mySession.getBasicRemote().sendText("Hello!");
+			mySession.getBasicRemote().sendText("quit");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -64,9 +71,8 @@ public class Client implements ActionListener{
 	}
 
 	@OnMessage
-	public String onMessage(String message, Session session) {
+	public void onMessage(String message, Session session) {
 		logger.info("Received ...." + message);
-		return "echo";
 	}
 
 	@OnClose
