@@ -71,8 +71,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		}
 		else if(event.getSource() == clientFrame.chatEntry){
 			if(clientFrame.chatEntry.getText().equals("")) return;
-			/*clientFrame.appendToPane("User: ", Color.RED);
-			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);*/
+			clientFrame.appendToPane("User: ", Color.RED);
+			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);
 
 			// Adding text to the chat panel should actually be handled exclusively on receiving a message
 			// in order to ensure that the message order is the same on every client.
@@ -109,8 +109,13 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
-				String[] vals = {(startingx < event.getX() ? startingx : (event.getX())) + "",
-						(startingy < event.getY() ? startingy : (event.getY())) + "", 
+				System.out.println("startx = " + startingx);
+				System.out.println("starty = " + startingy);
+				System.out.println("event.getX() = " + event.getX());
+				System.out.println("event.getY() = " + event.getY());
+				System.out.println("Math.abs(event.getX()-startingx) = " + Math.abs(event.getX()-startingx));
+				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
+						(startingy < event.getY() ? startingy : event.getY()) + "", 
 						Math.abs(event.getX()-startingx) + "",
 						Math.abs(event.getY()-startingy) + "",
 						(fill ? "BLACK" : null)};	

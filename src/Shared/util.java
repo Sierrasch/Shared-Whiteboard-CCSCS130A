@@ -51,26 +51,26 @@ public class util {
 				case "ry":
 					ry = Integer.parseInt(entry.getValue());
 				}
+			}
 
-				switch(e.element_type){
-				case "rect":
-					if(x != -1 && y != -1 && width != -1 && height != -1){	
-						g.drawRect(x, y, width, height);
-					}
-					break;
-				case "ellipse":
-					if(cx != -1 && cy != -1 && rx != -1 && ry != -1){
-						g.drawOval(cx-rx, cy-ry, rx *2, ry*2);
-					}
-					break;
-				case "text":
-					if(x!= 0 && y!= 0){
-						g.drawString(e.data, x, y);
-					}
-					break;
-				case "path":
-					break;
+			switch(e.element_type){
+			case "rect":
+				if(x != -1 && y != -1 && width != -1 && height != -1){	
+					g.drawRect(x, y, width, height);
 				}
+				break;
+			case "ellipse":
+				if(cx != -1 && cy != -1 && rx != -1 && ry != -1){
+					g.drawOval(cx-rx, cy-ry, rx *2, ry*2);
+				}
+				break;
+			case "text":
+				if(x!= 0 && y!= 0){
+					g.drawString(e.data, x, y);
+				}
+				break;
+			case "path":
+				break;
 			}
 		}
 	}
