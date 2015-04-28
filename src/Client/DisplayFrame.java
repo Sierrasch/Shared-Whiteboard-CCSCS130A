@@ -35,7 +35,6 @@ public class DisplayFrame extends JFrame{
 	public JButton rectButton;
 	public JButton ellipseButton;
 	public JButton fillButton;
-	Element[] myElements;
 	JTextPane chatArea;
 	public JTextField chatEntry;
 	public ElementContainer elements = new ElementContainer();

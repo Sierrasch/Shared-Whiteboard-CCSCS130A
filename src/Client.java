@@ -51,18 +51,15 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	clientProcessor processor = new clientProcessor();
 	int localFreeNode = 0;
 	String id = "no_id";
-	String choosenDrawType = "rect";
 	boolean scalingDrawing = false;
 	int startingx = 0;
 	int startingy = 0;
-	int startX;
-	int startY;
 	final String tempUser = "@tEmP@";
 	String currentShape = "";
 	boolean fill = true;
 
 	public Client(){
-		
+
 		clientFrame = new DisplayFrame("Client", this);
 		System.out.println("InitializedClient");
 	}
@@ -107,44 +104,44 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		scalingDrawing =  true;
 		startingx = event.getX();
 		startingy = event.getY();
-		
-		
 	}
 
-	public void mouseDragged(MouseEvent e){
-		elements.remove(tempUser + tempCounter);
+	public void mouseDragged(MouseEvent event){
+		clientFrame.elements.remove(tempUser + tempCounter);
 		tempCounter--;
-		if(drawing){
+		if(scalingDrawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
-				String[] vals = {(startX < e.getX() ? startX : e.getX()) + "",
-						(startY < e.getY() ? startY : e.getY()) + "",
-						Math.abs(startX - e.getX()) + "",
-						Math.abs(startY - e.getY()) + "",
+				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
+						(startingy < event.getY() ? startingy : event.getY()) + "", 
+						Math.abs(event.getX()-startingx) + "",
+						Math.abs(event.getY()-startingy) + "",
 						(fill ? "BLACK" : null)};	
-				elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
+				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
 			}
 		}
 	}
 
 	public void mouseReleased(MouseEvent event){
-		drawing = false;
-		elements.remove(tempUser + tempCounter);
+		scalingDrawing = false;
+		clientFrame.elements.remove(tempUser + tempCounter);
 		if(scalingDrawing == false)
 			return;
 		System.out.println("Something Pressed"+ event.getX()+","+event.getY());
-		Element e = Element.rectElement(startingx, startingy,  event.getX()-startingx, event.getY()-startingy,id + this.localFreeNode,id , this.localFreeNode);
-		clientFrame.elements.put(e);
-		insertOperation io = new insertOperation(id + this.localFreeNode, null, tempCounter, "rect", e.attributes);
-		processor.sendInsert(io, activeSession);
-		clientFrame.repaint();
-		localFreeNode++;
+		if(currentShape.equals("rect")){
+			Element e = Element.rectElement((startingx < event.getX() ? startingx : event.getX()), (startingy < event.getY() ? startingy : event.getY()),  Math.abs(event.getX()-startingx), Math.abs(event.getY()-startingy),id + this.localFreeNode,id , this.localFreeNode);
+			clientFrame.elements.put(e);
+			insertOperation io = new insertOperation(id + this.localFreeNode, null, tempCounter, "rect", e.attributes);
+			processor.sendInsert(io, activeSession);
+			clientFrame.repaint();
+			localFreeNode++;
+		}
 		scalingDrawing =  false;
 	}
 
 	public void mouseExited(MouseEvent event){
-		elements.remove(tempUser + tempCounter);
-		
+		clientFrame.elements.remove(tempUser + tempCounter);
+
 	}
 
 	public void mouseEntered(MouseEvent event){}
