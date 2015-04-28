@@ -33,6 +33,7 @@ public class WhiteboardServer {
 	private serverProcessor processor;
 	private Gson gson = util.getGSON();
     private ElementContainer ec;
+    
     public WhiteboardServer () {
     	processor = new serverProcessor();
     	ec =  new ElementContainer();
@@ -62,6 +63,7 @@ public class WhiteboardServer {
  
     @OnMessage
     public String onMessage(String message, Session session) {
+    	System.out.println(message);
     	String type = util.getType(message,gson);
     	
         switch (type) {

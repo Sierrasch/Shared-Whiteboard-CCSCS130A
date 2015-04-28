@@ -167,13 +167,14 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			System.out.println("Failed to contact server.");
 			e.printStackTrace();
 		}
-
+		/*
 		try {
-			activeSession.getBasicRemote().sendText("Hello!");
-			activeSession.getBasicRemote().sendText("quit");
+			//activeSession.getBasicRemote().sendText("Hello!");
+			//activeSession.getBasicRemote().sendText("quit");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	@OnOpen

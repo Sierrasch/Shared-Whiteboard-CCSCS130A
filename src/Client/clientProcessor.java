@@ -16,7 +16,7 @@ public class clientProcessor implements operationProcessor {
 
 	@Override
 	public void join(ClientLogin loginInfo, Session session, ElementContainer ec) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

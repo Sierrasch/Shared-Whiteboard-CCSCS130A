@@ -1,8 +1,11 @@
 package Server;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.websocket.Session;
+
+import com.google.gson.Gson;
 
 import Operations.deleteOperation;
 import Operations.insertOperation;
@@ -13,10 +16,21 @@ import Shared.operationProcessor;
 import Shared.util;
 
 public class serverProcessor implements operationProcessor {
-
+	HashMap<String,String> users = new HashMap<String, String>();
+	Gson g = util.getGSON();
 	@Override
 	public void join(ClientLogin loginInfo, Session session, ElementContainer ec) {
-		// TODO Auto-generated method stub
+		users.put(loginInfo.name, session.getId());
+		String[] userArray = new String[users.size()];
+		users.values().toArray(userArray);
+		ClientIntialization ci = new ClientIntialization(session.getId(), ec.toArray(), userArray);
+		
+		try {
+			session.getBasicRemote().sendText(g.toJson(ci));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

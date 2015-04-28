@@ -3,12 +3,12 @@ package Shared;
 public class ClientLogin implements Sanitizable {
 	
 	public String name;
-	private boolean isClean;
-	private String type;
+	public boolean isClean;
+	public String type;
 	public ClientLogin(String name)
 	{
 		this.name = name;
-		this.type = "user_connect";
+		this.type = "join";
 		this.isClean = false;
 	}
 	@Override
