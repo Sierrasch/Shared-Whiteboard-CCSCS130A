@@ -47,7 +47,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	private DisplayFrame clientFrame;
 	Session activeSession = null;
 	Gson gson = util.getGSON();
-	private int tempCounter = -1;
 	clientProcessor processor = new clientProcessor();
 	int localFreeNode = 0;
 	String id = "no_id";
@@ -55,7 +54,9 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	int startingx = 0;
 	int startingy = 0;
 	final String tempUser = "@tEmP@";
-	String currentShape = "";
+	String currentShape = "rect";
+	private int tempCounter = -1;
+	private int lastCounter = -1;
 	boolean fill = true;
 
 	public Client(){
@@ -77,8 +78,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			// in order to ensure that the message order is the same on every client.
 			//Communicator.sendChat(clientFrame.chatEntry.getText());
 			clientFrame.chatEntry.setText("");
-			System.out.println(event.getActionCommand());
-			System.out.println(event.getActionCommand().charAt(event.getActionCommand().length()-1));
 		}
 		else if(event.getSource() == clientFrame.rectButton){
 			currentShape = "rect";
@@ -97,7 +96,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		}
 	}
 
-	// TODO: Drawing functionality not fully implemented yet.
 	public void mousePressed(MouseEvent event){
 		if(scalingDrawing == true)
 			return;
@@ -107,42 +105,47 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	}
 
 	public void mouseDragged(MouseEvent event){
-		clientFrame.elements.remove(tempUser + tempCounter);
-		tempCounter--;
+		clientFrame.elements.remove(tempUser + lastCounter);
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
-				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
-						(startingy < event.getY() ? startingy : event.getY()) + "", 
+				String[] vals = {(startingx < event.getX() ? startingx : (event.getX())) + "",
+						(startingy < event.getY() ? startingy : (event.getY())) + "", 
 						Math.abs(event.getX()-startingx) + "",
 						Math.abs(event.getY()-startingy) + "",
 						(fill ? "BLACK" : null)};	
 				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
 			}
+			lastCounter = tempCounter;
+			tempCounter--;
 		}
 		clientFrame.repaint();
 	}
 
 	public void mouseReleased(MouseEvent event){
 		scalingDrawing = false;
-		clientFrame.elements.remove(tempUser + tempCounter);
+		clientFrame.elements.remove(tempUser + lastCounter);
 		if(scalingDrawing == false)
 			return;
 		System.out.println("Something Pressed"+ event.getX()+","+event.getY());
 		if(currentShape.equals("rect")){
 			Element e = Element.rectElement((startingx < event.getX() ? startingx : event.getX()), (startingy < event.getY() ? startingy : event.getY()),  Math.abs(event.getX()-startingx), Math.abs(event.getY()-startingy),id + this.localFreeNode,id , this.localFreeNode);
 			clientFrame.elements.put(e);
+			lastCounter = tempCounter;
+			tempCounter--;
 			insertOperation io = new insertOperation(id + this.localFreeNode, null, tempCounter, "rect", e.attributes);
 			processor.sendInsert(io, activeSession);
 			clientFrame.repaint();
 			localFreeNode++;
 		}
+		clientFrame.repaint();
 		scalingDrawing =  false;
 	}
 
 	public void mouseExited(MouseEvent event){
-		clientFrame.elements.remove(tempUser + tempCounter);
-
+		clientFrame.elements.remove(tempUser + lastCounter);
+		tempCounter--;
+		scalingDrawing = false;
 	}
 
 	public void mouseEntered(MouseEvent event){}

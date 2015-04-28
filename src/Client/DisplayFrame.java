@@ -106,7 +106,7 @@ public class DisplayFrame extends JFrame{
 		ellipseButton = new JButton("Ellipse");
 		fillButton = new JButton("Fill: OFF");
 		bPannel.add(rectButton);
-		bPannel.add(ellipseButton);
+		//bPannel.add(ellipseButton);
 		bPannel.add(fillButton);
 
 		JPanel chatPanel = new JPanel();
