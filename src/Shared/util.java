@@ -1,7 +1,10 @@
 package Shared;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.GeneralPath;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -31,6 +34,7 @@ public class util {
 			int cy = -1;
 			int rx = -1;
 			int ry = -1;
+			String d = "";
 
 			for(HashMap.Entry<String, String> entry : e.attributes.entrySet()){
 				switch(entry.getKey()){
@@ -50,6 +54,8 @@ public class util {
 					rx = Integer.parseInt(entry.getValue());
 				case "ry":
 					ry = Integer.parseInt(entry.getValue());
+				case "d":
+					d = entry.getValue();
 				}
 			}
 
@@ -71,6 +77,60 @@ public class util {
 				break;
 			case "path":
 				break;
+				break;
+			case "ellipse":
+				if(cx != -1 && cy != -1 && rx != -1 && ry != -1){
+					g.drawOval(cx-rx, cy-ry, rx *2, ry*2);
+				}
+				break;
+			case "text":
+				if(x!= 0 && y!= 0){
+					g.drawString(objects[i].data, x, y);
+				}
+				break;
+			case "path":
+				drawPath(d, g);
+				break;
+			}
+		}
+	}
+	public static void drawPath(String path, Graphics g){
+		if(path != ""){
+			Graphics2D g2 = (Graphics2D) g;
+	        g2.setStroke(new BasicStroke(4.0f));
+	        g2.setPaint(Color.GREEN);
+			GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO);
+			String[] pathTerms = path.split(" ");
+			for(int i = 0; i < pathTerms.length; i++){
+				switch(pathTerms[i]){
+				case "M":
+					polyline.moveTo(Double.parseDouble(pathTerms[i+1]), Double.parseDouble(pathTerms[i+2]));
+					i+=2;
+					break;
+				case "L":
+					polyline.lineTo(Double.parseDouble(pathTerms[i+1]), Double.parseDouble(pathTerms[i+2]));
+					i+=2;
+					break;
+				case "H":
+					break;
+				case "V":
+					break;
+				case "C":
+					break;
+				case "S":
+					break;
+				case "Q":
+					break;
+				case "T":
+					break;
+				case "A":
+					break;
+				case "Z":
+					polyline.closePath();
+					break;
+					
+				}
+				g2.draw(polyline);
 			}
 		}
 	}
