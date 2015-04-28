@@ -1,5 +1,4 @@
-package Server;
-
+package Client;
 import java.io.IOException;
 
 import javax.websocket.Session;
@@ -12,7 +11,8 @@ import Shared.ElementContainer;
 import Shared.operationProcessor;
 import Shared.util;
 
-public class serverProcessor implements operationProcessor {
+
+public class clientProcessor implements operationProcessor {
 
 	@Override
 	public void join(ClientLogin loginInfo, Session session, ElementContainer ec) {
@@ -38,13 +38,16 @@ public class serverProcessor implements operationProcessor {
 		
 	}
 
+	@Override
 	public void sendInsert(insertOperation operation, Session session) {
+		/*
 		try {
 			session.getBasicRemote().sendText(util.getGSON().toJson(operation));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	@Override
@@ -68,5 +71,5 @@ public class serverProcessor implements operationProcessor {
 		}
 		
 	}
-
+	
 }

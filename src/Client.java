@@ -1,11 +1,10 @@
 import Client.DisplayFrame;
-import Client.Communicator;
+import Operations.insertOperation;
 import Shared.ClientLogin;
 import Shared.Element;
 import Shared.ElementContainer;
 import Shared.TypeIdentifier;
 import Shared.util;
-import Client.Communicator;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -36,6 +35,9 @@ import javax.websocket.Session;
 import javax.websocket.CloseReason.CloseCodes;
 
 import org.glassfish.tyrus.client.ClientManager;
+import org.omg.CORBA.FREE_MEM;
+
+import Client.clientProcessor;
 
 import com.google.gson.Gson;
 
@@ -43,12 +45,16 @@ import com.google.gson.Gson;
 public class Client implements MouseListener, MouseMotionListener, ActionListener{
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
-	Session mySession;
 	Session activeSession = null;
 	Gson gson = util.getGSON();
-	boolean drawing = false;
 	private int tempCounter = -1;
-	ElementContainer elements;
+	clientProcessor processor = new clientProcessor();
+	int localFreeNode = 0;
+	String id = "no_id";
+	String choosenDrawType = "rect";
+	boolean scalingDrawing = false;
+	int startingx = 0;
+	int startingy = 0;
 	int startX;
 	int startY;
 	final String tempUser = "@tEmP@";
@@ -56,8 +62,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	boolean fill = true;
 
 	public Client(){
-		elements = new ElementContainer();
-		clientFrame = new DisplayFrame("Client", elements, this);
+		
+		clientFrame = new DisplayFrame("Client", this);
 		System.out.println("InitializedClient");
 	}
 
@@ -72,7 +78,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 			// Adding text to the chat panel should actually be handled exclusively on receiving a message
 			// in order to ensure that the message order is the same on every client.
-			Communicator.sendChat(clientFrame.chatEntry.getText());
+			//Communicator.sendChat(clientFrame.chatEntry.getText());
 			clientFrame.chatEntry.setText("");
 			System.out.println(event.getActionCommand());
 			System.out.println(event.getActionCommand().charAt(event.getActionCommand().length()-1));
@@ -96,13 +102,18 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 	// TODO: Drawing functionality not fully implemented yet.
 	public void mousePressed(MouseEvent event){
-		drawing = true;
+		if(scalingDrawing == true)
+			return;
+		scalingDrawing =  true;
+		startingx = event.getX();
+		startingy = event.getY();
+		
+		
 	}
 
 	public void mouseDragged(MouseEvent e){
 		elements.remove(tempUser + tempCounter);
 		tempCounter--;
-		
 		if(drawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
@@ -119,12 +130,21 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	public void mouseReleased(MouseEvent event){
 		drawing = false;
 		elements.remove(tempUser + tempCounter);
-		Communicator.addElement(new Element(null));	// This needs to be implemented in communicator.
+		if(scalingDrawing == false)
+			return;
+		System.out.println("Something Pressed"+ event.getX()+","+event.getY());
+		Element e = Element.rectElement(startingx, startingy,  event.getX()-startingx, event.getY()-startingy,id + this.localFreeNode,id , this.localFreeNode);
+		clientFrame.elements.put(e);
+		insertOperation io = new insertOperation(id + this.localFreeNode, null, tempCounter, "rect", e.attributes);
+		processor.sendInsert(io, activeSession);
+		clientFrame.repaint();
+		localFreeNode++;
+		scalingDrawing =  false;
 	}
 
 	public void mouseExited(MouseEvent event){
 		elements.remove(tempUser + tempCounter);
-		drawing = false;
+		
 	}
 
 	public void mouseEntered(MouseEvent event){}
@@ -136,13 +156,13 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
 			ClientManager client = ClientManager.createClient();
-			mySession = client.connectToServer(this, cec, new URI(uri));
 			Session newSession = client.connectToServer(this, cec, new URI(uri));
 			ClientLogin login = new ClientLogin(userName);
 			if(activeSession != null){
 				activeSession.close();
 			}
 			activeSession = newSession;
+			id = activeSession.getId();
 			activeSession.getBasicRemote().sendText(gson.toJson(login));
 
 		} catch (Exception e) {
@@ -151,8 +171,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		}
 
 		try {
-			mySession.getBasicRemote().sendText("Hello!");
-			mySession.getBasicRemote().sendText("quit");
+			activeSession.getBasicRemote().sendText("Hello!");
+			activeSession.getBasicRemote().sendText("quit");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
