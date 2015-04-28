@@ -37,7 +37,12 @@ public class ElementContainer {
 		elements.put(src, el);
 		return true;
 	}
-
+	public Element[] toArray(){
+		Element[] e = new Element[elements.size()];
+		elements.values().toArray(e);
+		return e;
+		
+	}
 	public synchronized boolean put(SourceObject src, Element el){
 		return put(src.user + src.tracker, el);
 	}

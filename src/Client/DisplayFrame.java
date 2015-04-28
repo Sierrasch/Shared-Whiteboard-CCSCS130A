@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -22,16 +24,20 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import Shared.Element;
+import Shared.ElementContainer;
 
 
-public class DisplayFrame extends JFrame {
+public class DisplayFrame extends JFrame{
 	DrawPanel drawPanel;
 	public JTextField userNameInput;
 	public JTextField serverURIInput;
 	public JButton loginButton;
-	Element[] myElements;
+	public JButton rectButton;
+	public JButton ellipseButton;
+	public JButton fillButton;
 	JTextPane chatArea;
 	public JTextField chatEntry;
+	public ElementContainer elements = new ElementContainer();
 
 	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
 		super(title);
@@ -46,6 +52,11 @@ public class DisplayFrame extends JFrame {
 		setupFrame();
 		loginButton.addActionListener(parent);
 		chatEntry.addActionListener(parent);
+		drawPanel.addMouseListener((MouseListener) parent);
+		drawPanel.addMouseMotionListener((MouseMotionListener) parent);
+		rectButton.addActionListener(parent);
+		ellipseButton.addActionListener(parent);
+		fillButton.addActionListener(parent);
 		setSize(1000, 600);
 		setVisible(true);
 		repaint();
@@ -54,10 +65,9 @@ public class DisplayFrame extends JFrame {
 	private void setupFrame(){
 		this.setLayout(new BorderLayout());
 
-		drawPanel = new DrawPanel();
-		drawPanel.setBackground(Color.BLACK);
+		drawPanel = new DrawPanel(elements);
+		drawPanel.setBackground(Color.WHITE);
 		this.add(drawPanel, BorderLayout.CENTER);
-
 		drawPanel.repaint();
 
 		JPanel buttonsPanel = new JPanel();
@@ -78,7 +88,6 @@ public class DisplayFrame extends JFrame {
 		serverURIInput.setColumns(25);
 		serverURIInput.setText("ws://0.0.0.0:8025/websockets/board");
 
-
 		loginPanel1.setLayout(new FlowLayout());
 		loginPanel2.setLayout(new FlowLayout());
 		loginPanel3.setLayout(new FlowLayout());
@@ -91,6 +100,14 @@ public class DisplayFrame extends JFrame {
 		loginPanelMain.add(loginPanel1, BorderLayout.NORTH);
 		loginPanelMain.add(loginPanel2, BorderLayout.CENTER);
 		loginPanelMain.add(loginPanel3, BorderLayout.SOUTH);
+		
+		JPanel bPannel = new JPanel();
+		rectButton = new JButton("Rectangle");
+		ellipseButton = new JButton("Ellipse");
+		fillButton = new JButton("Fill: OFF");
+		bPannel.add(rectButton);
+		//bPannel.add(ellipseButton);
+		bPannel.add(fillButton);
 
 		JPanel chatPanel = new JPanel();
 		chatPanel.setLayout(new BorderLayout());
@@ -100,14 +117,14 @@ public class DisplayFrame extends JFrame {
 		JScrollPane chatScrollPane = new JScrollPane(chatArea,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		chatScrollPane.setPreferredSize(new Dimension(25, 40));
 		chatPanel.add(chatScrollPane, BorderLayout.CENTER);
 		chatEntry = new JTextField();
 		chatPanel.add(chatEntry, BorderLayout.SOUTH);
-
+		
 		buttonsPanel.add(loginPanelMain, BorderLayout.NORTH);
 		//buttonsPanel.add(loginPanel3, BorderLayout.CENTER);
 		buttonsPanel.add(chatPanel, BorderLayout.CENTER);
+		buttonsPanel.add(bPannel, BorderLayout.SOUTH);
 		this.add(buttonsPanel, BorderLayout.EAST);
 	}
 
@@ -125,5 +142,9 @@ public class DisplayFrame extends JFrame {
 		chatArea.setCharacterAttributes(aset, false);
 		chatArea.replaceSelection(msg);
 		chatArea.setEditable(false);
+	}
+	public void repaint(){
+		drawPanel.setElements(elements);
+		drawPanel.repaint();
 	}
 }

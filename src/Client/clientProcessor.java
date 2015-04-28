@@ -1,7 +1,5 @@
-package Server;
-
+package Client;
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.websocket.Session;
 
@@ -12,22 +10,26 @@ import Operations.insertOperation;
 import Operations.modifyOperation;
 import Shared.ClientIntialization;
 import Shared.ClientLogin;
+import Shared.Element;
 import Shared.ElementContainer;
 import Shared.operationProcessor;
 import Shared.util;
 
-public class serverProcessor implements operationProcessor {
-	HashMap<String,String> users = new HashMap<String, String>();
-	Gson g = util.getGSON();
+
+public class clientProcessor implements operationProcessor {
+
+	private Gson gson = util.getGSON();
+
 	
-	public void join(ClientLogin loginInfo, Session session, ElementContainer ec) {
-		users.put(loginInfo.name, session.getId());
-		String[] userArray = new String[users.size()];
-		users.values().toArray(userArray);
-		ClientIntialization ci = new ClientIntialization(session.getId(), ec.toArray(), userArray);
+	public void recieveJoin(ClientIntialization loginInfo, Session session, ElementContainer ec) {
+		for (Element element : loginInfo.doc) {
+			ec.put(element);
+		}
 		
+	}
+	public void sendJoin(ClientLogin loginInfo, Session session, ElementContainer ec) {
 		try {
-			session.getBasicRemote().sendText(g.toJson(ci));
+			session.getBasicRemote().sendText(gson.toJson(loginInfo));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,13 +55,16 @@ public class serverProcessor implements operationProcessor {
 		
 	}
 
+	@Override
 	public void sendInsert(insertOperation operation, Session session) {
+		/*
 		try {
 			session.getBasicRemote().sendText(util.getGSON().toJson(operation));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	@Override
@@ -83,5 +88,5 @@ public class serverProcessor implements operationProcessor {
 		}
 		
 	}
-
+	
 }

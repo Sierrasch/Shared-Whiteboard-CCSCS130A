@@ -11,16 +11,19 @@ import javax.swing.JPanel;
 import com.google.gson.Gson;
 
 import Shared.Element;
+import Shared.ElementContainer;
 import Shared.TypeIdentifier;
 import Shared.util;
 
 public class DrawPanel extends JPanel {
-	ArrayList<Element> elements;
-	public DrawPanel() {
-		super(true);
-		elements = new ArrayList<Element>();
-	}
+	ElementContainer elementContainer = new ElementContainer();
 	
+	public DrawPanel(ElementContainer e) {
+		super(true);
+	}
+	public void setElements(ElementContainer e){
+		elementContainer = e;	
+	}
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Gson gson = util.getGSON();
@@ -73,6 +76,6 @@ public class DrawPanel extends JPanel {
 			}
 		}
 		*/
+		util.drawObjects(elementContainer.getValues(), g);
 	}
-
 }

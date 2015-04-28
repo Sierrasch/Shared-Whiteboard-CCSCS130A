@@ -7,8 +7,11 @@ import Operations.insertOperation;
 import Operations.modifyOperation;
 
 public interface operationProcessor {
-	public void join(ClientLogin loginInfo, Session session);
-	public void insert(insertOperation operation, Session session);
-	public void delete(deleteOperation operation, Session session);
-	public void modify(modifyOperation operation, Session session);
+	//public void join(ClientLogin loginInfo, Session session, ElementContainer ec);
+	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec);
+	public void recieveDelete(deleteOperation operation, Session session, ElementContainer ec);
+	public void recieveModify(modifyOperation operation, Session session, ElementContainer ec);
+	public void sendInsert(insertOperation operation, Session session);
+	public void sendDelete(deleteOperation operation, Session session);
+	public void sendModify(modifyOperation operation, Session session);
 }
