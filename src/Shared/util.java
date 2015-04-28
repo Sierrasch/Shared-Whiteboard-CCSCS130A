@@ -2,6 +2,7 @@ package Shared;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -30,6 +31,7 @@ public class util {
 			int cy = -1;
 			int rx = -1;
 			int ry = -1;
+			String d = "";
 
 			for(HashMap.Entry<String, String> entry : map.entrySet()){
 				switch(entry.getKey()){
@@ -49,6 +51,8 @@ public class util {
 					rx = Integer.parseInt(entry.getValue());
 				case "ry":
 					ry = Integer.parseInt(entry.getValue());
+				case "d":
+					d = entry.getValue();
 				}
 			}
 
@@ -69,7 +73,39 @@ public class util {
 				}
 				break;
 			case "path":
+				drawPath(d, g);
 				break;
+			}
+		}
+	}
+	public static void drawPath(String path, Graphics g){
+		if(path != ""){
+			Graphics2D g2 = (Graphics2D) g;
+			String[] pathTerms = path.split(" ");
+			for(int i = 0; i < pathTerms.length; i++){
+				switch(pathTerms[i]){
+				case "M":
+					break;
+				case "L":
+					break;
+				case "H":
+					break;
+				case "V":
+					break;
+				case "C":
+					break;
+				case "S":
+					break;
+				case "Q":
+					break;
+				case "T":
+					break;
+				case "A":
+					break;
+				case "Z":
+					break;
+					
+				}
 			}
 		}
 	}
