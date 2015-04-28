@@ -45,10 +45,18 @@ public class DrawPanel extends JPanel {
 			+"\"data\" : \"yayyayayyayaya\","
 			+"\"children\" : ["
 			+"]}";
+		String jsonPath = "{\"element_type\":\"path\","
+				+"\"attributes\": {"
+					+"\"d\" : \"M 400 100 L 300 100 L 300 200 L 300 300\""
+				+"},"
+				+"\"data\" : \"foo\","
+				+"\"children\" : ["
+				+"]}"; 
 		Element element1 = gson.fromJson(jsonRectangle, Element.class);
 		Element element2 = gson.fromJson(jsonEllipse, Element.class);
 		Element element3 = gson.fromJson(jsonText, Element.class);
-		Element[] myElements = {element1, element2, element3};
+		Element element4 = gson.fromJson(jsonPath, Element.class);
+		Element[] myElements = {element1, element2, element3,element4};
 		
 		util.drawObjects(myElements, g);
 		/*

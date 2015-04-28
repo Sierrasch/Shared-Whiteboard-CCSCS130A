@@ -1,8 +1,10 @@
 package Shared;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.GeneralPath;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -81,12 +83,19 @@ public class util {
 	public static void drawPath(String path, Graphics g){
 		if(path != ""){
 			Graphics2D g2 = (Graphics2D) g;
+	        g2.setStroke(new BasicStroke(4.0f));
+	        g2.setPaint(Color.GREEN);
+			GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO);
 			String[] pathTerms = path.split(" ");
 			for(int i = 0; i < pathTerms.length; i++){
 				switch(pathTerms[i]){
 				case "M":
+					polyline.moveTo(Double.parseDouble(pathTerms[i+1]), Double.parseDouble(pathTerms[i+2]));
+					i+=2;
 					break;
 				case "L":
+					polyline.lineTo(Double.parseDouble(pathTerms[i+1]), Double.parseDouble(pathTerms[i+2]));
+					i+=2;
 					break;
 				case "H":
 					break;
@@ -103,9 +112,11 @@ public class util {
 				case "A":
 					break;
 				case "Z":
+					polyline.closePath();
 					break;
 					
 				}
+				g2.draw(polyline);
 			}
 		}
 	}
