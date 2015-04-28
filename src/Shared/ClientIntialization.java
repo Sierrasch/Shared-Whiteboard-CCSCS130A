@@ -1,6 +1,5 @@
-package Server;
+package Shared;
 
-import Shared.Element;
 
 public class ClientIntialization {
 	public String type = "init";
