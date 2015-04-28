@@ -7,7 +7,7 @@ import Operations.insertOperation;
 import Operations.modifyOperation;
 
 public interface operationProcessor {
-	public void join(ClientLogin loginInfo, Session session, ElementContainer ec);
+	//public void join(ClientLogin loginInfo, Session session, ElementContainer ec);
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec);
 	public void recieveDelete(deleteOperation operation, Session session, ElementContainer ec);
 	public void recieveModify(modifyOperation operation, Session session, ElementContainer ec);

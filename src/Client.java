@@ -1,5 +1,6 @@
 import Client.DisplayFrame;
 import Operations.insertOperation;
+import Shared.ClientIntialization;
 import Shared.ClientLogin;
 import Shared.Element;
 import Shared.ElementContainer;
@@ -58,7 +59,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	private int tempCounter = -1;
 	private int lastCounter = -1;
 	boolean fill = true;
-
+	
+	
 	public Client(){
 
 		clientFrame = new DisplayFrame("Client", this);
@@ -169,7 +171,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			}
 			activeSession = newSession;
 			id = activeSession.getId();
-			activeSession.getBasicRemote().sendText(gson.toJson(login));
+			processor.sendJoin(login, activeSession, clientFrame.elements);
 
 		} catch (Exception e) {
 			System.out.println("Failed to contact server.");
@@ -197,6 +199,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 		switch (typeID.type) {
 		case "init":
+			ClientIntialization ci = gson.fromJson(message, ClientIntialization.class);
+			processor.recieveJoin(ci, session, clientFrame.elements);
 			break;
 		case "failed":
 			break;
