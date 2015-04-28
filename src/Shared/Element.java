@@ -26,8 +26,7 @@ public class Element {
 	
 	public Element(String eType, String[] aNames, String[] aVals, String tempUser, int tempTracker){
 		element_type = eType;
-		src.user = tempUser;
-		src.tracker = tempTracker;
+		src = new SourceObject(tempUser, tempTracker);
 		attributes = new HashMap<String,String>();
 		for(int i = 0; i < aNames.length && i < aVals.length; i++){
 			attributes.put(aNames[i], aVals[i]);

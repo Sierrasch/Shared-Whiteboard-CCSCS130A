@@ -120,6 +120,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
 			}
 		}
+		clientFrame.repaint();
 	}
 
 	public void mouseReleased(MouseEvent event){

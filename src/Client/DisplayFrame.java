@@ -66,7 +66,7 @@ public class DisplayFrame extends JFrame{
 		this.setLayout(new BorderLayout());
 
 		drawPanel = new DrawPanel(elements);
-		drawPanel.setBackground(Color.BLACK);
+		drawPanel.setBackground(Color.WHITE);
 		this.add(drawPanel, BorderLayout.CENTER);
 		drawPanel.repaint();
 
@@ -146,7 +146,5 @@ public class DisplayFrame extends JFrame{
 	public void repaint(){
 		drawPanel.setElements(elements);
 		drawPanel.repaint();
-		super.repaint();
-		
 	}
 }

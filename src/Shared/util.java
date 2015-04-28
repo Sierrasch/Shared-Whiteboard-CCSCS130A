@@ -52,6 +52,8 @@ public class util {
 					ry = Integer.parseInt(entry.getValue());
 				}
 			}
+			
+			System.out.println("Drawing " + e.element_type);
 
 			switch(e.element_type){
 			case "rect":
