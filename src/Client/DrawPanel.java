@@ -61,7 +61,7 @@ public class DrawPanel extends JPanel {
 		Element element4 = gson.fromJson(jsonPath, Element.class);
 		Element[] myElements = {element1, element2, element3,element4};
 		
-		util.drawObjects(myElements, g);
+		util.drawObjects(elementContainer.getValues(), g);
 		/*
 		for(int i = -100; i< 800; i +=100){
 			for(int j=-100;j<800;j+=100){

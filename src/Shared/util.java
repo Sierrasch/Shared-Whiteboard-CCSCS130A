@@ -76,19 +76,6 @@ public class util {
 				}
 				break;
 			case "path":
-				break;
-				break;
-			case "ellipse":
-				if(cx != -1 && cy != -1 && rx != -1 && ry != -1){
-					g.drawOval(cx-rx, cy-ry, rx *2, ry*2);
-				}
-				break;
-			case "text":
-				if(x!= 0 && y!= 0){
-					g.drawString(objects[i].data, x, y);
-				}
-				break;
-			case "path":
 				drawPath(d, g);
 				break;
 			}
