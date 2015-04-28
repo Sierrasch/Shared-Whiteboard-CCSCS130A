@@ -19,7 +19,7 @@ public class util {
 
 
 	public static void drawObjects(Iterator<Element> iterator, Graphics g){
-		g.setColor(new Color(255,255,255));
+		g.setColor(Color.BLACK);
 		while(iterator.hasNext()){
 			Element e = iterator.next();
 			
@@ -52,8 +52,6 @@ public class util {
 					ry = Integer.parseInt(entry.getValue());
 				}
 			}
-			
-			System.out.println("Drawing " + e.element_type);
 
 			switch(e.element_type){
 			case "rect":

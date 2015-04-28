@@ -55,7 +55,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	int startingx = 0;
 	int startingy = 0;
 	final String tempUser = "@tEmP@";
-	String currentShape = "";
+	String currentShape = "rect";
 	boolean fill = true;
 
 	public Client(){
@@ -97,7 +97,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		}
 	}
 
-	// TODO: Drawing functionality not fully implemented yet.
 	public void mousePressed(MouseEvent event){
 		if(scalingDrawing == true)
 			return;
@@ -112,8 +111,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
-				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
-						(startingy < event.getY() ? startingy : event.getY()) + "", 
+				String[] vals = {(startingx > event.getX() ? startingx : (event.getX() - Math.abs(event.getX()-startingx))) + "",
+						(startingy > event.getY() ? startingy : (event.getY() - Math.abs(event.getY()-startingy))) + "", 
 						Math.abs(event.getX()-startingx) + "",
 						Math.abs(event.getY()-startingy) + "",
 						(fill ? "BLACK" : null)};	
@@ -137,12 +136,14 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			clientFrame.repaint();
 			localFreeNode++;
 		}
+		clientFrame.repaint();
 		scalingDrawing =  false;
 	}
 
 	public void mouseExited(MouseEvent event){
 		clientFrame.elements.remove(tempUser + tempCounter);
-
+		tempCounter--;
+		scalingDrawing = false;
 	}
 
 	public void mouseEntered(MouseEvent event){}
