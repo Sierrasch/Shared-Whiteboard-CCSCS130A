@@ -14,6 +14,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -34,10 +38,14 @@ public class DisplayFrame extends JFrame{
 	public JButton loginButton;
 	public JButton rectButton;
 	public JButton ellipseButton;
+	public JButton pathButton;
 	public JButton fillButton;
 	JTextPane chatArea;
 	public JTextField chatEntry;
 	public ElementContainer elements = new ElementContainer();
+	
+	public static final int ICON_WIDTH = 25;
+	public static final int ICON_HEIGHT = 25;
 
 	public DisplayFrame(String title, ActionListener parent) throws HeadlessException {
 		super(title);
@@ -56,6 +64,7 @@ public class DisplayFrame extends JFrame{
 		drawPanel.addMouseMotionListener((MouseMotionListener) parent);
 		rectButton.addActionListener(parent);
 		ellipseButton.addActionListener(parent);
+		pathButton.addActionListener(parent);
 		fillButton.addActionListener(parent);
 		setSize(1000, 600);
 		setVisible(true);
@@ -100,13 +109,19 @@ public class DisplayFrame extends JFrame{
 		loginPanelMain.add(loginPanel1, BorderLayout.NORTH);
 		loginPanelMain.add(loginPanel2, BorderLayout.CENTER);
 		loginPanelMain.add(loginPanel3, BorderLayout.SOUTH);
-		
+
 		JPanel bPannel = new JPanel();
-		rectButton = new JButton("Rectangle");
-		ellipseButton = new JButton("Ellipse");
+
+		rectButton = new JButton(new ImageIcon((new ImageIcon("img/square.png")).getImage().
+				getScaledInstance(ICON_WIDTH, ICON_HEIGHT,  java.awt.Image.SCALE_SMOOTH)));
+		ellipseButton = new JButton(new ImageIcon((new ImageIcon("img/circle.png")).getImage().
+				getScaledInstance(ICON_WIDTH, ICON_HEIGHT,  java.awt.Image.SCALE_SMOOTH)));
+		pathButton = new JButton(new ImageIcon((new ImageIcon("img/path.png")).getImage().
+				getScaledInstance(ICON_WIDTH, ICON_HEIGHT,  java.awt.Image.SCALE_SMOOTH)));
 		fillButton = new JButton("Fill: OFF");
 		bPannel.add(rectButton);
-		//bPannel.add(ellipseButton);
+		bPannel.add(ellipseButton);
+		bPannel.add(pathButton);
 		bPannel.add(fillButton);
 
 		JPanel chatPanel = new JPanel();
@@ -120,7 +135,7 @@ public class DisplayFrame extends JFrame{
 		chatPanel.add(chatScrollPane, BorderLayout.CENTER);
 		chatEntry = new JTextField();
 		chatPanel.add(chatEntry, BorderLayout.SOUTH);
-		
+
 		buttonsPanel.add(loginPanelMain, BorderLayout.NORTH);
 		//buttonsPanel.add(loginPanel3, BorderLayout.CENTER);
 		buttonsPanel.add(chatPanel, BorderLayout.CENTER);

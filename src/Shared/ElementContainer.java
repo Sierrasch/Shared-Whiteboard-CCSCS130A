@@ -79,7 +79,7 @@ public class ElementContainer {
 	/* Returns an Iterator that can be used to iterate over all of the
 	 * elements (shapes) in the white board.
 	 */
-	public Iterator<Element> getValues(){
+	public synchronized Iterator<Element> getValues(){
 		return elements.values().iterator();
 	}
 }

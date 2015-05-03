@@ -4,7 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -21,8 +24,9 @@ public class util {
 	}
 
 
-	public static void drawObjects(Iterator<Element> iterator, Graphics g){
-		g.setColor(Color.BLACK);
+	public static void drawObjects(Iterator<Element> iterator, Graphics gr){
+		Graphics2D g = (Graphics2D)gr;
+
 		while(iterator.hasNext()){
 			Element e = iterator.next();
 
@@ -34,40 +38,62 @@ public class util {
 			int cy = -1;
 			int rx = -1;
 			int ry = -1;
+			String fill = null;
 			String d = "";
 
 			for(HashMap.Entry<String, String> entry : e.attributes.entrySet()){
 				switch(entry.getKey()){
 				case "x":
 					x = Integer.parseInt(entry.getValue());
+					break;
 				case "y":
 					y = Integer.parseInt(entry.getValue());
+					break;
 				case "width":
 					width = Integer.parseInt(entry.getValue());
+					break;
 				case "height":
 					height = Integer.parseInt(entry.getValue());
+					break;
 				case "cx":
 					cx = Integer.parseInt(entry.getValue());
+					break;
 				case "cy":
 					cy = Integer.parseInt(entry.getValue());
+					break;
 				case "rx":
 					rx = Integer.parseInt(entry.getValue());
+					break;
 				case "ry":
 					ry = Integer.parseInt(entry.getValue());
-				case "d":
-					d = entry.getValue();
+					break;
+				case "fill":
+					fill = entry.getValue();
+					break;
 				}
+			}
+			
+			if(fill != null){
+				Color c = parseColor(fill);
+				g.setColor(c);
+				g.setPaint(c);
+			}
+			else{
+				g.setColor(Color.BLACK);
+				g.setPaint(Color.BLACK);
 			}
 
 			switch(e.element_type){
 			case "rect":
-				if(x != -1 && y != -1 && width != -1 && height != -1){	
-					g.drawRect(x, y, width, height);
+				if(x != -1 && y != -1 && width != -1 && height != -1){
+					Rectangle s = new Rectangle(x, y, width, height);
+					g.draw(s);
 				}
 				break;
 			case "ellipse":
 				if(cx != -1 && cy != -1 && rx != -1 && ry != -1){
-					g.drawOval(cx-rx, cy-ry, rx *2, ry*2);
+					Ellipse2D s = new Ellipse2D.Double(cx-rx, cy-ry, rx *2, ry*2);
+					g.draw(s);
 				}
 				break;
 			case "text":
@@ -81,11 +107,10 @@ public class util {
 			}
 		}
 	}
-	public static void drawPath(String path, Graphics g){
+
+	public static void drawPath(String path, Graphics2D g2){
 		if(path != ""){
-			Graphics2D g2 = (Graphics2D) g;
-	        g2.setStroke(new BasicStroke(4.0f));
-	        g2.setPaint(Color.GREEN);
+			g2.setStroke(new BasicStroke(4.0f));
 			GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO);
 			String[] pathTerms = path.split(" ");
 			for(int i = 0; i < pathTerms.length; i++){
@@ -115,19 +140,39 @@ public class util {
 				case "Z":
 					polyline.closePath();
 					break;
-					
+
 				}
 				g2.draw(polyline);
 			}
 		}
 	}
-}
 
-
-/* testy thingy
-	public static void main(String args[]){
-		String object = "{\"type\" : \"init\", \"client_id\" : 5}";
-		System.out.println(getType(object, getGSON()));
+	public static Color parseColor(String c){
+		switch(c.toLowerCase()){
+		case "black":
+			return Color.BLACK;
+		case "blue":
+			return Color.BLUE;
+		case "cyan":
+			return Color.CYAN;
+		case "gray":
+			return Color.GRAY;
+		case "green":
+			return Color.GREEN;
+		case "magenta":
+			return Color.MAGENTA;
+		case "orange":
+			return Color.ORANGE;
+		case "pink":
+			return Color.PINK;
+		case "red":
+			return Color.RED;
+		case "white":
+			return Color.WHITE;
+		case "yellow":
+			return Color.YELLOW;
+		default:
+			return Color.BLACK;
+		}
 	}
-}*/
-
+}

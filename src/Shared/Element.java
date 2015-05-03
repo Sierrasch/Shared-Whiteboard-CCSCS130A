@@ -6,7 +6,7 @@ import Operations.insertOperation;
 
 public class Element {
 	public String element_type;
-	public String node_id;
+	public int node_id;
 	public String data;
 	public HashMap<String,String> attributes;
 	public Element[] children;
@@ -35,7 +35,7 @@ public class Element {
 	public Element() {
 		// TODO Auto-generated constructor stub
 	}
-	public static Element rectElement(int x, int y, int width, int height, String node_id,String user,int tracker){
+	public static Element rectElement(int x, int y, int width, int height, int node_id,String user,int tracker){
 		Element e =  new Element();
 		//if(iO == null) return;
 		e.element_type = "rect";
@@ -53,7 +53,7 @@ public class Element {
 		e.attributes = temp;
 		return e;
 	}
-	public static Element textElement(int x, int y, String text, String node_id, String user,int tracker){
+	public static Element textElement(int x, int y, String text, int node_id, String user,int tracker){
 		Element e =  new Element();
 		e.element_type = "text";
 		
@@ -69,7 +69,7 @@ public class Element {
 		e.attributes = temp;
 		return e;
 	}
-	public static Element ellipseElement(int cx, int cy, int rx, int ry,String node_id, String user,int tracker){
+	public static Element ellipseElement(int cx, int cy, int rx, int ry,int node_id, String user,int tracker){
 		Element e =  new Element();
 		e.element_type = "ellipse";
 		
@@ -87,7 +87,7 @@ public class Element {
 		e.attributes = temp;
 		return e;
 	}
-	public static Element pathElement(String d, String node_id, String user,int tracker){
+	public static Element pathElement(String d, int node_id, String user,int tracker){
 		Element e =  new Element();
 		e.element_type = "path";
 		//data = iO.data;

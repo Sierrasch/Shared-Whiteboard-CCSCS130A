@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -47,8 +48,11 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
 	Session activeSession = null;
-	Gson gson = util.getGSON();
 	clientProcessor processor = new clientProcessor();
+	
+	Gson gson = util.getGSON();
+	
+	
 	int localFreeNode = 0;
 	String id = "no_id";
 	boolean scalingDrawing = false;
@@ -58,18 +62,19 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	String currentShape = "rect";
 	private int tempCounter = -1;
 	private int lastCounter = -1;
-	boolean fill = true;
+	String fill = "green";
 	
 	
 	public Client(){
-
 		clientFrame = new DisplayFrame("Client", this);
+		clientFrame.fillButton.setText("Fill: " + fill);
 		System.out.println("InitializedClient");
 	}
 
 	public void actionPerformed(ActionEvent event){
 		if(event.getSource() == clientFrame.loginButton){
 			setupClient(clientFrame.serverURIInput.getText(), clientFrame.userNameInput.getText());
+			return;
 		}
 		else if(event.getSource() == clientFrame.chatEntry){
 			if(clientFrame.chatEntry.getText().equals("")) return;
@@ -80,21 +85,32 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			// in order to ensure that the message order is the same on every client.
 			//Communicator.sendChat(clientFrame.chatEntry.getText());
 			clientFrame.chatEntry.setText("");
+			return;
 		}
-		else if(event.getSource() == clientFrame.rectButton){
+		else if(event.getSource() == clientFrame.fillButton){
+			if(fill.equals("red")){
+				fill = "green";
+			}
+			else if(fill.equals("green")){
+				fill = "red";
+			}
+			clientFrame.fillButton.setText("Fill: " + fill);
+		}
+		
+		clientFrame.rectButton.setBackground(Color.WHITE);
+		clientFrame.ellipseButton.setBackground(Color.WHITE);
+		clientFrame.pathButton.setBackground(Color.WHITE);
+		if(event.getSource() == clientFrame.rectButton){
+			clientFrame.rectButton.setBackground(Color.RED);
 			currentShape = "rect";
 		}
 		else if(event.getSource() == clientFrame.ellipseButton){
+			clientFrame.ellipseButton.setBackground(Color.RED);
 			currentShape = "ellipse";
 		}
-		else if(event.getSource() == clientFrame.fillButton){
-			fill = !fill;
-			if(fill){
-				clientFrame.fillButton.setText("Fill: ON");
-			}
-			else{
-				clientFrame.fillButton.setText("Fill: OFF");
-			}
+		else if(event.getSource() == clientFrame.pathButton){
+			clientFrame.pathButton.setBackground(Color.RED);
+			currentShape = "path";
 		}
 	}
 
@@ -108,20 +124,17 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 	public void mouseDragged(MouseEvent event){
 		clientFrame.elements.remove(tempUser + lastCounter);
+		System.out.println("Removed rect " + tempUser + lastCounter);
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
-				System.out.println("startx = " + startingx);
-				System.out.println("starty = " + startingy);
-				System.out.println("event.getX() = " + event.getX());
-				System.out.println("event.getY() = " + event.getY());
-				System.out.println("Math.abs(event.getX()-startingx) = " + Math.abs(event.getX()-startingx));
 				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
 						(startingy < event.getY() ? startingy : event.getY()) + "", 
 						Math.abs(event.getX()-startingx) + "",
 						Math.abs(event.getY()-startingy) + "",
-						(fill ? "BLACK" : null)};	
+						fill};
 				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
+				System.out.println("Added rect " + tempUser + tempCounter);
 			}
 			lastCounter = tempCounter;
 			tempCounter--;
@@ -132,17 +145,18 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	public void mouseReleased(MouseEvent event){
 		scalingDrawing = false;
 		clientFrame.elements.remove(tempUser + lastCounter);
-		if(scalingDrawing == false)
+		System.out.println("Removed rect " + tempUser + lastCounter);
+		if(!scalingDrawing)
 			return;
-		System.out.println("Something Pressed"+ event.getX()+","+event.getY());
 		if(currentShape.equals("rect")){
-			Element e = Element.rectElement((startingx < event.getX() ? startingx : event.getX()), (startingy < event.getY() ? startingy : event.getY()),  Math.abs(event.getX()-startingx), Math.abs(event.getY()-startingy),id + this.localFreeNode,id , this.localFreeNode);
-			clientFrame.elements.put(e);
-			lastCounter = tempCounter;
-			tempCounter--;
-			insertOperation io = new insertOperation(id + this.localFreeNode, null, tempCounter, "rect", e.attributes);
+			String[] keys = {"x", "y", "width", "height", "fill"};
+			String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
+					(startingy < event.getY() ? startingy : event.getY()) + "", 
+					Math.abs(event.getX()-startingx) + "",
+					Math.abs(event.getY()-startingy) + "",
+					fill};
+			insertOperation io = new insertOperation("rect", keys, vals, id, this.localFreeNode, null);
 			processor.sendInsert(io, activeSession);
-			clientFrame.repaint();
 			localFreeNode++;
 		}
 		clientFrame.repaint();
@@ -156,7 +170,9 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	}
 
 	public void mouseEntered(MouseEvent event){}
-	public void mouseClicked(MouseEvent event){}
+	public void mouseClicked(MouseEvent event){
+		clientFrame.repaint();
+	}
 	public void mouseMoved(MouseEvent event){}
 
 	public void setupClient(String uri, String userName){
