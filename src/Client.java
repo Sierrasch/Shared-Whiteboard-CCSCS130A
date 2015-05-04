@@ -229,6 +229,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 		switch (typeID.type) {
 		case "init":
+			clientFrame.elements = new ElementContainer();
 			ClientIntialization ci = gson.fromJson(message, ClientIntialization.class);
 			processor.recieveJoin(ci, session, clientFrame.elements);
 			break;
