@@ -49,10 +49,10 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	private DisplayFrame clientFrame;
 	Session activeSession = null;
 	clientProcessor processor = new clientProcessor();
-	
+
 	Gson gson = util.getGSON();
-	
-	
+
+
 	int localFreeNode = 0;
 	String id = "no_id";
 	boolean scalingDrawing = false;
@@ -63,8 +63,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	private int tempCounter = -1;
 	private int lastCounter = -1;
 	String fill = "green";
-	
-	
+
+
 	public Client(){
 		clientFrame = new DisplayFrame("Client", this);
 		clientFrame.fillButton.setText("Fill: " + fill);
@@ -96,7 +96,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			}
 			clientFrame.fillButton.setText("Fill: " + fill);
 		}
-		
+
 		clientFrame.rectButton.setBackground(Color.WHITE);
 		clientFrame.ellipseButton.setBackground(Color.WHITE);
 		clientFrame.pathButton.setBackground(Color.WHITE);
@@ -124,17 +124,17 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 	public void mouseDragged(MouseEvent event){
 		clientFrame.elements.remove(tempUser + lastCounter);
-		System.out.println("Removed rect " + tempUser + lastCounter);
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
-				String[] keys = {"x", "y", "width", "height", "fill"};
-				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
-						(startingy < event.getY() ? startingy : event.getY()) + "", 
-						Math.abs(event.getX()-startingx) + "",
-						Math.abs(event.getY()-startingy) + "",
+				String[] keys = {"cx", "cy", "rx", "ry", "fill"};
+				String[] vals = {(Math.round((startingx < event.getX() ? startingx : event.getX()) + 
+						Math.abs(event.getX()-startingx) / 2.0)) + "",
+						Math.round((startingy < event.getY() ? startingy : event.getY()) + 
+						Math.abs(event.getY()-startingy) / 2.0) + "", 
+						Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
+						Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
 						fill};
-				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
-				System.out.println("Added rect " + tempUser + tempCounter);
+				clientFrame.elements.put(new Element("ellipse", keys, vals, tempUser, tempCounter));
 			}
 			lastCounter = tempCounter;
 			tempCounter--;
@@ -145,7 +145,6 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	public void mouseReleased(MouseEvent event){
 		scalingDrawing = false;
 		clientFrame.elements.remove(tempUser + lastCounter);
-		System.out.println("Removed rect " + tempUser + lastCounter);
 		if(!scalingDrawing)
 			return;
 		if(currentShape.equals("rect")){
@@ -156,6 +155,19 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 					Math.abs(event.getY()-startingy) + "",
 					fill};
 			insertOperation io = new insertOperation("rect", keys, vals, id, this.localFreeNode, null);
+			processor.sendInsert(io, activeSession);
+			localFreeNode++;
+		}
+		else if(currentShape.equals("ellipse")){
+			String[] keys = {"cx", "cy", "rx", "ry", "fill"};
+			String[] vals = {(Math.round((startingx < event.getX() ? startingx : event.getX()) + 
+					Math.abs(event.getX()-startingx) / 2.0)) + "",
+					Math.round((startingy < event.getY() ? startingy : event.getY()) + 
+					Math.abs(event.getX()-startingx) / 2.0) + "", 
+					Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
+					Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
+					fill};
+			insertOperation io = new insertOperation("ellipse", keys, vals, id, this.localFreeNode, null);
 			processor.sendInsert(io, activeSession);
 			localFreeNode++;
 		}
@@ -200,7 +212,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		*/
+		 */
 	}
 
 	@OnOpen
