@@ -12,6 +12,7 @@ import Operations.insertOperation;
 import Operations.modifyOperation;
 import Shared.ClientIntialization;
 import Shared.ClientLogin;
+import Shared.Element;
 import Shared.ElementContainer;
 import Shared.operationProcessor;
 import Shared.util;
@@ -37,7 +38,7 @@ public class serverProcessor implements operationProcessor {
 
 	@Override
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec) {
-		ec.put(operation.)
+		ec.put(new Element(operation));
 		
 	}
 
