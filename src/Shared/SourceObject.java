@@ -8,4 +8,8 @@ public class SourceObject {
 		user = u;
 		tracker = t;
 	}
+
+	public SourceObject() {
+		// TODO Auto-generated constructor stub
+	}
 }

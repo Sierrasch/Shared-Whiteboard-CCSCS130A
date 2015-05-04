@@ -2,6 +2,7 @@ package Server;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.websocket.Session;
 
@@ -39,6 +40,19 @@ public class serverProcessor implements operationProcessor {
 	@Override
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec) {
 		ec.put(new Element(operation));
+		String recievedFrom = session.getId();
+		Iterator<Session> sessions= session.getOpenSessions().iterator();
+		while(sessions.hasNext()){
+			Session sTemp = sessions.next();
+			if(sTemp.getId().equals(recievedFrom))
+				continue;
+			try {
+				sTemp.getBasicRemote().sendText(g.toJson(operation, insertOperation.class));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 

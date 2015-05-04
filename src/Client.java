@@ -235,6 +235,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		case "failed":
 			break;
 		case "insert":
+			insertOperation iO = gson.fromJson(message, insertOperation.class);
+			processor.recieveInsert(iO, session, clientFrame.elements);
 			break;
 		case "delete":
 			break;
@@ -250,7 +252,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			}
 			break;
 		}
-
+		clientFrame.repaint();
 		System.out.println("Recieved Message with type: " + typeID.type);
 	}
 

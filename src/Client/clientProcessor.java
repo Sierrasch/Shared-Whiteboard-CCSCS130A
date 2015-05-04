@@ -39,7 +39,8 @@ public class clientProcessor implements operationProcessor {
 
 	@Override
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec) {
-		// TODO Auto-generated method stub
+		ec.put(new Element(operation));
+		System.out.println("Element Added");
 		
 	}
 

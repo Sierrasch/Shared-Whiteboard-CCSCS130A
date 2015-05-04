@@ -13,10 +13,12 @@ public class Element {
 	public SourceObject src;
 	
 	public Element(insertOperation iO){
+		
 		if(iO == null) return;
 		element_type = iO.element_type;
 		data = iO.data;
 		node_id = iO.node_id;
+		src = new SourceObject();
 		src.tracker = iO.tracker;
 		if(iO.src != null){
 			src = new SourceObject(iO.src.user, iO.src.tracker);
