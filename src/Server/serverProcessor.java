@@ -19,7 +19,7 @@ import Shared.operationProcessor;
 import Shared.util;
 
 public class serverProcessor implements operationProcessor {
-	HashMap<String,String> users = new HashMap<String, String>();
+	static HashMap<String,String> users = new HashMap<String, String>();
 	Gson g = util.getGSON();
 	
 	public void join(ClientLogin loginInfo, Session session, ElementContainer ec) {

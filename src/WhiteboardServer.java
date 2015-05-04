@@ -32,11 +32,10 @@ import javax.websocket.server.ServerEndpoint;
 public class WhiteboardServer {
 	private serverProcessor processor;
 	private Gson gson = util.getGSON();
-    private ElementContainer ec;
+    static ElementContainer ec =   new ElementContainer();
     
     public WhiteboardServer () {
     	processor = new serverProcessor();
-    	ec =  new ElementContainer();
     }
     public void runServer() {
     	Server server = new Server("ws://localhost", 8025, "/websockets", WhiteboardServer.class);
