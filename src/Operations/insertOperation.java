@@ -6,14 +6,15 @@ import Shared.AttributeObject;
 import Shared.SourceObject;
 
 public class insertOperation extends Operation{
-	public static final String type = INSERT;
+	public String type = INSERT;
 	public int node_id;
 	public String data;
 	public long before_node_id;
 	public String element_type;
-	public int tracker; // Only used when sending from client
-	public SourceObject src; // Only used when sending from server
+	//public int tracker; // Only used when sending from client
+	//public SourceObject src; // Only used when sending from server
 	public HashMap<String,String> attributes;
+	
 	public insertOperation(int node_id, String data, long before_node_id, String element_type, HashMap<String,String> attributes){
 		this.node_id = node_id;
 		this.data =  data;

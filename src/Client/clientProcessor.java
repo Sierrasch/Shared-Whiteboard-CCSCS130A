@@ -57,14 +57,13 @@ public class clientProcessor implements operationProcessor {
 
 	@Override
 	public void sendInsert(insertOperation operation, Session session) {
-		/*
+		System.out.println("SendInsert Entered");
 		try {
 			session.getBasicRemote().sendText(util.getGSON().toJson(operation));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
 	}
 
 	@Override

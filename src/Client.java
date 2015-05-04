@@ -124,7 +124,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 
 	public void mouseDragged(MouseEvent event){
 		clientFrame.elements.remove(tempUser + lastCounter);
-		System.out.println("Removed rect " + tempUser + lastCounter);
+		//System.out.println("Removed rect " + tempUser + lastCounter);
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
 				String[] keys = {"x", "y", "width", "height", "fill"};
@@ -134,7 +134,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 						Math.abs(event.getY()-startingy) + "",
 						fill};
 				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
-				System.out.println("Added rect " + tempUser + tempCounter);
+				//System.out.println("Added rect " + tempUser + tempCounter);
 			}
 			lastCounter = tempCounter;
 			tempCounter--;
@@ -143,11 +143,13 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	}
 
 	public void mouseReleased(MouseEvent event){
-		scalingDrawing = false;
 		clientFrame.elements.remove(tempUser + lastCounter);
 		System.out.println("Removed rect " + tempUser + lastCounter);
-		if(!scalingDrawing)
+		if(!scalingDrawing){
+			System.out.println("for some reason!");
 			return;
+		}
+		scalingDrawing = false;
 		if(currentShape.equals("rect")){
 			String[] keys = {"x", "y", "width", "height", "fill"};
 			String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",

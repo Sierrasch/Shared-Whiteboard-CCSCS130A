@@ -37,7 +37,7 @@ public class serverProcessor implements operationProcessor {
 
 	@Override
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec) {
-		// TODO Auto-generated method stub
+		ec.put(operation.)
 		
 	}
 
