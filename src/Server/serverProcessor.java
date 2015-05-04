@@ -44,8 +44,6 @@ public class serverProcessor implements operationProcessor {
 		Iterator<Session> sessions= session.getOpenSessions().iterator();
 		while(sessions.hasNext()){
 			Session sTemp = sessions.next();
-			if(sTemp.getId().equals(recievedFrom))
-				continue;
 			try {
 				sTemp.getBasicRemote().sendText(g.toJson(operation, insertOperation.class));
 			} catch (IOException e) {
