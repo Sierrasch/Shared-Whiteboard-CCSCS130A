@@ -1,24 +1,7 @@
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
-import org.glassfish.tyrus.server.Server;
-
-import com.google.gson.Gson;
-
-import Operations.deleteOperation;
-import Operations.insertOperation;
-import Operations.modifyOperation;
-import Server.serverProcessor;
-import Shared.ClientLogin;
-import Shared.ElementContainer;
-import Shared.SourceObject;
-import Shared.TypeIdentifier;
-import Shared.operationProcessor;
-import Shared.util;
-
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Logger;
 
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCodes;
@@ -27,6 +10,18 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
+import org.glassfish.tyrus.server.Server;
+
+import Operations.deleteOperation;
+import Operations.insertOperation;
+import Operations.modifyOperation;
+import Server.serverProcessor;
+import Shared.ClientLogin;
+import Shared.ElementContainer;
+import Shared.util;
+
+import com.google.gson.Gson;
  
 @ServerEndpoint(value = "/board")
 public class WhiteboardServer {

@@ -2,32 +2,27 @@ package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GraphicsConfiguration;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import Shared.Element;
 import Shared.ElementContainer;
 
 
@@ -112,11 +107,14 @@ public class DisplayFrame extends JFrame{
 
 		JPanel bPannel = new JPanel();
 
-		rectButton = new JButton(new ImageIcon((new ImageIcon("img/square.png")).getImage().
+		System.out.println(getClass());
+		System.out.println(getClass().getResource("img/square.png"));
+		
+		rectButton = new JButton(new ImageIcon((new ImageIcon(getClass().getResource("/square.png"))).getImage().
 				getScaledInstance(ICON_WIDTH, ICON_HEIGHT,  java.awt.Image.SCALE_SMOOTH)));
-		ellipseButton = new JButton(new ImageIcon((new ImageIcon("img/circle.png")).getImage().
+		ellipseButton = new JButton(new ImageIcon((new ImageIcon(getClass().getResource("/circle.png"))).getImage().
 				getScaledInstance(ICON_WIDTH, ICON_HEIGHT,  java.awt.Image.SCALE_SMOOTH)));
-		pathButton = new JButton(new ImageIcon((new ImageIcon("img/path.png")).getImage().
+		pathButton = new JButton(new ImageIcon((new ImageIcon(getClass().getResource("/path.png"))).getImage().
 				getScaledInstance(ICON_WIDTH, ICON_HEIGHT,  java.awt.Image.SCALE_SMOOTH)));
 		fillButton = new JButton("Fill: OFF");
 		bPannel.add(rectButton);

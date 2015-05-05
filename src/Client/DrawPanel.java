@@ -1,18 +1,10 @@
 package Client;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.LayoutManager;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import com.google.gson.Gson;
-
-import Shared.Element;
 import Shared.ElementContainer;
-import Shared.TypeIdentifier;
 import Shared.util;
 
 public class DrawPanel extends JPanel {

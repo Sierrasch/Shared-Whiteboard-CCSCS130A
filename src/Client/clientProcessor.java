@@ -3,8 +3,6 @@ import java.io.IOException;
 
 import javax.websocket.Session;
 
-import com.google.gson.Gson;
-
 import Operations.deleteOperation;
 import Operations.insertOperation;
 import Operations.modifyOperation;
@@ -14,6 +12,8 @@ import Shared.Element;
 import Shared.ElementContainer;
 import Shared.operationProcessor;
 import Shared.util;
+
+import com.google.gson.Gson;
 
 
 public class clientProcessor implements operationProcessor {

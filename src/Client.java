@@ -1,4 +1,24 @@
-import Client.DisplayFrame;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.util.logging.Logger;
+
+import javax.websocket.ClientEndpoint;
+import javax.websocket.ClientEndpointConfig;
+import javax.websocket.CloseReason;
+import javax.websocket.CloseReason.CloseCodes;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+
+import org.glassfish.tyrus.client.ClientManager;
+
 import Operations.insertOperation;
 import Shared.ClientIntialization;
 import Shared.ClientLogin;
@@ -6,40 +26,8 @@ import Shared.Element;
 import Shared.ElementContainer;
 import Shared.TypeIdentifier;
 import Shared.util;
-
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
-import javax.websocket.ClientEndpoint;
-import javax.websocket.ClientEndpointConfig;
-import javax.websocket.CloseReason;
-import javax.websocket.DeploymentException;
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.MessageHandler;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.CloseReason.CloseCodes;
-
-import org.glassfish.tyrus.client.ClientManager;
-import org.omg.CORBA.FREE_MEM;
-
 import Client.clientProcessor;
+import Client.DisplayFrame;
 
 import com.google.gson.Gson;
 
@@ -131,6 +119,17 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 						Math.abs(event.getX()-startingx) / 2.0)) + "",
 						Math.round((startingy < event.getY() ? startingy : event.getY()) + 
 						Math.abs(event.getY()-startingy) / 2.0) + "", 
+						Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
+						Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
+						fill};
+				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
+			}
+			else if(currentShape.equals("ellipse")){
+				String[] keys = {"cx", "cy", "rx", "ry", "fill"};
+				String[] vals = {(Math.round((startingx < event.getX() ? startingx : event.getX()) + 
+						Math.abs(event.getX()-startingx) / 2.0)) + "",
+						Math.round((startingy < event.getY() ? startingy : event.getY()) + 
+						Math.abs(event.getX()-startingx) / 2.0) + "", 
 						Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
 						Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
 						fill};

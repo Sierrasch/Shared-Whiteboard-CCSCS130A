@@ -1,6 +1,5 @@
 package Shared;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -79,7 +78,7 @@ public class ElementContainer {
 	/* Returns an Iterator that can be used to iterate over all of the
 	 * elements (shapes) in the white board.
 	 */
-	public synchronized Iterator<Element> getValues(){
+	public Iterator<Element> getValues(){
 		return elements.values().iterator();
 	}
 }
