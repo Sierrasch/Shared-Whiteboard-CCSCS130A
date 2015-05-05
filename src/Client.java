@@ -114,13 +114,11 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		clientFrame.elements.remove(tempUser + lastCounter);
 		if(scalingDrawing){
 			if(currentShape.equals("rect")){
-				String[] keys = {"cx", "cy", "rx", "ry", "fill"};
-				String[] vals = {(Math.round((startingx < event.getX() ? startingx : event.getX()) + 
-						Math.abs(event.getX()-startingx) / 2.0)) + "",
-						Math.round((startingy < event.getY() ? startingy : event.getY()) + 
-						Math.abs(event.getY()-startingy) / 2.0) + "", 
-						Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
-						Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
+				String[] keys = {"x", "y", "width", "height", "fill"};
+				String[] vals = {(startingx < event.getX() ? startingx : event.getX()) + "",
+						(startingy < event.getY() ? startingy : event.getY()) + "", 
+						Math.abs(event.getX()-startingx) + "",
+						Math.abs(event.getY()-startingy) + "",
 						fill};
 				clientFrame.elements.put(new Element("rect", keys, vals, tempUser, tempCounter));
 			}
@@ -129,7 +127,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 				String[] vals = {(Math.round((startingx < event.getX() ? startingx : event.getX()) + 
 						Math.abs(event.getX()-startingx) / 2.0)) + "",
 						Math.round((startingy < event.getY() ? startingy : event.getY()) + 
-						Math.abs(event.getX()-startingx) / 2.0) + "", 
+						Math.abs(event.getY()-startingy) / 2.0) + "", 
 						Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
 						Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
 						fill};
@@ -147,6 +145,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			System.out.println("for some reason!");
 			return;
 		}
+		System.out.println(currentShape);
 		scalingDrawing = false;
 		if(currentShape.equals("rect")){
 			String[] keys = {"x", "y", "width", "height", "fill"};
@@ -164,7 +163,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 			String[] vals = {(Math.round((startingx < event.getX() ? startingx : event.getX()) + 
 					Math.abs(event.getX()-startingx) / 2.0)) + "",
 					Math.round((startingy < event.getY() ? startingy : event.getY()) + 
-					Math.abs(event.getX()-startingx) / 2.0) + "", 
+					Math.abs(event.getY()-startingy) / 2.0) + "", 
 					Math.round(Math.abs(event.getX()-startingx) / 2.0) + "",
 					Math.round(Math.abs(event.getY()-startingy) / 2.0) + "",
 					fill};
