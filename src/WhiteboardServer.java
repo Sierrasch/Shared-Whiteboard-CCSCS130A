@@ -95,6 +95,7 @@ public class WhiteboardServer {
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));
+        serverProcessor.users.remove(session.getId());
     }
     
     public static void main(String[] args) {

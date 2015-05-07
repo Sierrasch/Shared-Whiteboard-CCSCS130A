@@ -36,11 +36,8 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private DisplayFrame clientFrame;
 	Session activeSession = null;
-	clientProcessor processor = new clientProcessor();
-
+	clientProcessor processor;
 	Gson gson = util.getGSON();
-
-
 	int localFreeNode = 0;
 	String id = "no_id";
 	boolean scalingDrawing = false;
@@ -57,6 +54,7 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		clientFrame = new DisplayFrame("Client", this);
 		clientFrame.fillButton.setText("Fill: " + fill);
 		System.out.println("InitializedClient");
+		processor = new clientProcessor(clientFrame);
 	}
 
 	public void actionPerformed(ActionEvent event){
@@ -66,9 +64,13 @@ public class Client implements MouseListener, MouseMotionListener, ActionListene
 		}
 		else if(event.getSource() == clientFrame.chatEntry){
 			if(clientFrame.chatEntry.getText().equals("")) return;
-			clientFrame.appendToPane("User: ", Color.RED);
-			clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);
-
+			//clientFrame.appendToPane("User: ", Color.RED);
+			//clientFrame.appendToPane(clientFrame.chatEntry.getText() + '\n', Color.BLACK);
+			String[] user = {"user"};
+			String[] temp ={"temp"};
+			insertOperation io = new insertOperation("message", user, temp, id, this.localFreeNode, clientFrame.chatEntry.getText());
+			processor.sendInsert(io, activeSession);
+			localFreeNode++;
 			// Adding text to the chat panel should actually be handled exclusively on receiving a message
 			// in order to ensure that the message order is the same on every client.
 			//Communicator.sendChat(clientFrame.chatEntry.getText());

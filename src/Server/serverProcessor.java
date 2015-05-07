@@ -1,5 +1,6 @@
 package Server;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,11 +20,11 @@ import Shared.util;
 import com.google.gson.Gson;
 
 public class serverProcessor implements operationProcessor {
-	static HashMap<String,String> users = new HashMap<String, String>();
+	public static HashMap<String,String> users = new HashMap<String, String>();
 	Gson g = util.getGSON();
 	
 	public void join(ClientLogin loginInfo, Session session, ElementContainer ec) {
-		users.put(loginInfo.name, session.getId());
+		users.put(session.getId(),loginInfo.name);
 		String[] userArray = new String[users.size()];
 		users.values().toArray(userArray);
 		ClientIntialization ci = new ClientIntialization(session.getId(), ec.toArray(), userArray);
@@ -39,8 +40,12 @@ public class serverProcessor implements operationProcessor {
 
 	@Override
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec) {
-		ec.put(new Element(operation));
-		String recievedFrom = session.getId();
+		if(operation.element_type.equals("message")){
+			operation.src.user = users.get(session.getId());
+		}
+		else{
+			ec.put(new Element(operation));
+		}
 		Iterator<Session> sessions= session.getOpenSessions().iterator();
 		while(sessions.hasNext()){
 			Session sTemp = sessions.next();

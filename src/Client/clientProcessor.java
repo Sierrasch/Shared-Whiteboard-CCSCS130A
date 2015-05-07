@@ -1,4 +1,5 @@
 package Client;
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.websocket.Session;
@@ -19,7 +20,11 @@ import com.google.gson.Gson;
 public class clientProcessor implements operationProcessor {
 
 	private Gson gson = util.getGSON();
-
+	private DisplayFrame ds;
+	public clientProcessor(DisplayFrame clientFrame){
+		ds = clientFrame;
+		
+	}
 	
 	public void recieveJoin(ClientIntialization loginInfo, Session session, ElementContainer ec) {
 		for (Element element : loginInfo.doc) {
@@ -39,6 +44,10 @@ public class clientProcessor implements operationProcessor {
 
 	@Override
 	public void recieveInsert(insertOperation operation, Session session, ElementContainer ec) {
+		if(operation.element_type.equals("message")){
+			ds.appendToPane(operation.src.user , Color.RED);
+			ds.appendToPane(": " + operation.data + '\n', Color.BLACK);
+		}
 		ec.put(new Element(operation));
 		System.out.println("Element Added");
 		
